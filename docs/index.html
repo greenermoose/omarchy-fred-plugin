@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fred's Omarchy Plugin Suite</title>
+  <meta name="description" content="Personal shell plugins, CLI management tools, and AI pair-programming architecture for Omarchy Linux.">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card-bg: #161922;
+      --card-border: #232838;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --code-bg: #090b10;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --font-mono: "Fira Code", "Cascadia Code", "Source Code Pro", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-green { background: rgba(34, 197, 94, 0.15); color: var(--green); border: 1px solid rgba(34, 197, 94, 0.3); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      color: #fff;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    p { margin-bottom: 1rem; color: var(--text-muted); }
+    strong { color: #fff; }
+
+    .lead {
+      font-size: 1.15rem;
+      color: var(--text);
+      max-width: 760px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    a.btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background 0.15s ease;
+    }
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-secondary { background: #232838; color: var(--text); border: 1px solid #334155; }
+    .btn-secondary:hover { background: #334155; }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--card-border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge badge-blue">Omarchy Linux Ecosystem</span>
+      <h1>Fred's Omarchy Plugin Suite</h1>
+      <p class="lead">
+        High-performance, secure, and ergonomic desktop shell plugins for Omarchy Linux (Hyprland + Quickshell), developed through transparent multi-agent AI pair programming.
+      </p>
+      <div class="code-block" style="max-width: 600px; margin: 1rem auto;">
+        <span>curl -sSL https://raw.githubusercontent.com/greenermoose/omarchy-fred-plugin/main/install.sh | bash</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>Standardization Strategy</h2>
+      <p>
+        Fred standardizes diverse personal computing hardware (workstations, Bosgame mini PCs, and laptops) onto a single, cohesive operating system: <strong>Omarchy Linux</strong> (an Arch Linux foundation with Hyprland and Quickshell).
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h3>Hardware Efficiency</h3>
+          <p>Wayland and Quickshell provide lightweight responsiveness with near-zero background idle CPU consumption, making mini PCs and laptops fly.</p>
+        </div>
+        <div class="card">
+          <h3>Unified Workflows</h3>
+          <p>Consistent keybindings, display modes, and package management across every machine eliminate maintenance overhead.</p>
+        </div>
+        <div class="card">
+          <h3>Tailored Desktop Suite</h3>
+          <p>The personal <code>fred.*</code> plugin suite enhances the bar and popouts for multi-calendar scheduling, dual-monitor desktop switching, and deep hardware telemetry.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Plugin Catalog</h2>
+      <div class="grid">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>fred.workspaces</h3>
+            <span class="badge badge-green">Verified</span>
+          </div>
+          <p>Dynamic workspace indicator with dual-monitor desktop mode switcher (laptop solo, dual monitor, or external presentation).</p>
+          <div class="code-block">
+            <span>omarchy plugin add https://github.com/greenermoose/omarchy-fred-workspaces.git --enable</span>
+          </div>
+          <div class="button-group">
+            <a href="https://github.com/greenermoose/omarchy-fred-workspaces" class="btn btn-secondary">GitHub Repo</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>fred.clock</h3>
+            <span class="badge badge-amber">In Review (#6509)</span>
+          </div>
+          <p>Next-event countdown badge on the bar, multi-feed iCalendar sync, and interactive agenda popout panel.</p>
+          <div class="code-block">
+            <span>omarchy plugin add https://github.com/greenermoose/omarchy-fred-clock.git --enable</span>
+          </div>
+          <div class="button-group">
+            <a href="https://github.com/greenermoose/omarchy-fred-clock" class="btn btn-secondary">GitHub Repo</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>fred.sysinfo</h3>
+            <span class="badge badge-blue">v1.0.0</span>
+          </div>
+          <p>Universal hardware monitoring: CPU topologies, multi-sensor thermals, memory, storage, and dynamic power profiles.</p>
+          <div class="code-block">
+            <span>omarchy plugin add https://github.com/greenermoose/omarchy-fred-sysinfo.git --enable</span>
+          </div>
+          <div class="button-group">
+            <a href="https://github.com/greenermoose/omarchy-fred-sysinfo" class="btn btn-secondary">GitHub Repo</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>fred.monitor</h3>
+            <span class="badge badge-blue">Planned</span>
+          </div>
+          <p>Comprehensive display panel replacement featuring per-display link retrain/Reset and scale-aware monitor arrangement.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.85rem;">Milestone A in active development.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>The Manager CLI: <code>omarchy-fred-plugin</code></h2>
+      <p>
+        A dedicated CLI tool to inspect, install, update, and diff plugins across local workstations and official marketplace registries:
+      </p>
+      <pre><code># Check live inventory and marketplace status
+omarchy-fred-plugin list --all
+
+# Inspect verified registry data
+omarchy-fred-plugin info fred.workspaces
+
+# Fast development loop for local QML iteration
+omarchy-fred-plugin dev fred.clock on
+# ... edit QML with live Quickshell hot-reload ...
+omarchy-fred-plugin dev fred.clock off</code></pre>
+    </section>
+
+    <section>
+      <h2>Transparent AI Collaboration</h2>
+      <p>
+        All software in this suite is developed collaboratively using a specialized multi-agent AI toolchain:
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h3>Planning & Architecture</h3>
+          <p><strong>Claude & Codex</strong>: Authoring durable system specifications, multi-step runbooks, and cross-cutting architectural policies.</p>
+        </div>
+        <div class="card">
+          <h3>Implementation & Coding</h3>
+          <p><strong>Antigravity (`agy` / Gemini 3.8 Flash High)</strong>: Primary coding partner for fast, multi-file pair-programming, security hardening, and git release pipelines.</p>
+        </div>
+        <div class="card">
+          <h3>System & Distro Knowledge</h3>
+          <p><strong>OpenCode & Grok</strong>: Package specifics, Arch Linux internals, and hardware troubleshooting.</p>
+        </div>
+      </div>
+      <p>
+        Every repository documents session prompts, model versions, and architectural rationale in <code>AI_PROVENANCE.md</code> and carries verified Git co-authorship trailers.
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        Authored by Fred (<a href="https://github.com/greenermoose">@greenermoose</a>) &bull; Built with Omarchy Linux &bull; Licensed under GPL-3.0-or-later
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
