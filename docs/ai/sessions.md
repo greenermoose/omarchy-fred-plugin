@@ -7,7 +7,7 @@ This log documents prompt history, tools, models, and key architectural decision
 ## Session: 2026-09-13 — Scaffolding, CLI Decoupling & Marketplace Integration
 
 - **Date**: 2026-09-13
-- **Primary AI Agent**: Antigravity (Google DeepMind) via Antigravity CLI (`agy`)
+- **Primary AI Agent**: Antigravity (Google DeepMind) via Antigravity CLI (`agy 1.2.2`)
 - **AI Model**: Gemini 3.8 Flash (High)
 - **Commits**: Initial repository commit & release v1.0.0
 - **Participants**: Fred (@greenermoose), Antigravity
