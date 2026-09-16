@@ -43,18 +43,22 @@
     }
 
     .badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.65rem;
       border-radius: 9999px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 1rem;
+      white-space: nowrap;
+      line-height: 1.4;
     }
     .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
     .badge-green { background: rgba(34, 197, 94, 0.15); color: var(--green); border: 1px solid rgba(34, 197, 94, 0.3); }
     .badge-amber { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .badge-gray { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
 
     h1 {
       font-size: 2.5rem;
@@ -100,44 +104,118 @@
       border: 1px solid var(--card-border);
       border-radius: 10px;
       padding: 1.5rem;
-      transition: transform 0.15s ease, border-color 0.15s ease;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      display: flex;
+      flex-direction: column;
     }
-    .card:hover {
+    .card.clickable {
+      cursor: pointer;
+    }
+    .card.clickable:hover {
       transform: translateY(-2px);
       border-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge-group {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .code-block {
       background: var(--code-bg);
       border: 1px solid var(--card-border);
       border-radius: 8px;
-      padding: 0.75rem 1rem;
+      padding: 0.5rem 0.75rem 0.5rem 1rem;
       font-family: var(--font-mono);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #38bdf8;
       overflow-x: auto;
       margin: 0.75rem 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.5rem;
+    }
+    .code-block code {
+      white-space: nowrap;
+      overflow-x: auto;
+      color: #38bdf8;
+    }
+
+    .pre-container {
+      position: relative;
+      margin: 1.25rem 0;
     }
 
     pre {
       background: var(--code-bg);
       border: 1px solid var(--card-border);
       border-radius: 8px;
-      padding: 1rem;
+      padding: 1.25rem 1rem 1rem;
       font-family: var(--font-mono);
       font-size: 0.85rem;
       color: #cbd5e1;
       overflow-x: auto;
-      margin: 1rem 0;
+      margin: 0;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.55rem;
+      font-size: 0.75rem;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .copy-btn.copied {
+      color: var(--green);
+      border-color: var(--green);
+      background: rgba(34, 197, 94, 0.15);
+    }
+    .copy-btn svg {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      vertical-align: middle;
+      fill: currentColor;
+    }
+
+    .pre-container .copy-btn {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.6rem;
     }
 
     .button-group {
       display: flex;
       gap: 0.75rem;
-      margin-top: 1rem;
+      margin-top: auto;
+      padding-top: 1rem;
     }
 
     a.btn {
@@ -171,10 +249,17 @@
       <span class="badge badge-blue">Omarchy Linux Ecosystem</span>
       <h1>Fred's Omarchy Plugin Suite</h1>
       <p class="lead">
-        High-performance, secure, and ergonomic desktop shell plugins for Omarchy Linux (Hyprland + Quickshell), developed through transparent multi-agent AI pair programming.
+        High-performance and ergonomic desktop shell plugins for Omarchy Linux (Hyprland + Quickshell), developed through transparent multi-agent AI pair programming.
       </p>
-      <div class="code-block" style="max-width: 600px; margin: 1rem auto;">
-        <span>curl -sSL https://raw.githubusercontent.com/greenermoose/omarchy-fred-plugin/main/install.sh | bash</span>
+      <div class="code-block" style="max-width: 620px; margin: 1rem auto;">
+        <code>curl -sSL https://raw.githubusercontent.com/greenermoose/omarchy-fred-plugin/main/install.sh | bash</code>
+        <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="copyCode(this, 'curl -sSL https://raw.githubusercontent.com/greenermoose/omarchy-fred-plugin/main/install.sh | bash')">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+            <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+          </svg>
+          <span>Copy</span>
+        </button>
       </div>
     </header>
 
@@ -202,55 +287,85 @@
     <section>
       <h2>Plugin Catalog</h2>
       <div class="grid">
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="card clickable" data-href="https://omarchyplugins.com/plugin.html?id=fred.workspaces">
+          <div class="card-header">
             <h3>fred.workspaces</h3>
-            <span class="badge badge-green">Verified</span>
+            <div class="badge-group">
+              <span class="badge badge-gray">v1.3.1</span>
+              <span class="badge badge-green">Verified</span>
+            </div>
           </div>
           <p>Dynamic workspace indicator with dual-monitor desktop mode switcher (laptop solo, dual monitor, or external presentation).</p>
           <div class="code-block">
-            <span>omarchy plugin add https://github.com/greenermoose/omarchy-fred-workspaces.git --enable</span>
+            <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-workspaces.git --enable</code>
+            <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-workspaces.git --enable')">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+              </svg>
+            </button>
           </div>
           <div class="button-group">
-            <a href="https://github.com/greenermoose/omarchy-fred-workspaces" class="btn btn-secondary">GitHub Repo</a>
+            <a href="https://omarchyplugins.com/plugin.html?id=fred.workspaces" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Marketplace</a>
+            <a href="https://github.com/greenermoose/omarchy-fred-workspaces" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
           </div>
         </div>
 
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="card clickable" data-href="https://omarchyplugins.com/plugin.html?id=fred.clock">
+          <div class="card-header">
             <h3>fred.clock</h3>
-            <span class="badge badge-amber">In Review (#6509)</span>
+            <div class="badge-group">
+              <span class="badge badge-gray">v1.3.1</span>
+              <span class="badge badge-green">Verified</span>
+            </div>
           </div>
           <p>Next-event countdown badge on the bar, multi-feed iCalendar sync, and interactive agenda popout panel.</p>
           <div class="code-block">
-            <span>omarchy plugin add https://github.com/greenermoose/omarchy-fred-clock.git --enable</span>
+            <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-clock.git --enable</code>
+            <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-clock.git --enable')">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+              </svg>
+            </button>
           </div>
           <div class="button-group">
-            <a href="https://github.com/greenermoose/omarchy-fred-clock" class="btn btn-secondary">GitHub Repo</a>
+            <a href="https://omarchyplugins.com/plugin.html?id=fred.clock" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Marketplace</a>
+            <a href="https://github.com/greenermoose/omarchy-fred-clock" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
           </div>
         </div>
 
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="card clickable" data-href="https://github.com/greenermoose/omarchy-fred-sysinfo">
+          <div class="card-header">
             <h3>fred.sysinfo</h3>
-            <span class="badge badge-blue">v1.0.0</span>
+            <div class="badge-group">
+              <span class="badge badge-gray">v1.0.0</span>
+            </div>
           </div>
           <p>Universal hardware monitoring: CPU topologies, multi-sensor thermals, memory, storage, and dynamic power profiles.</p>
           <div class="code-block">
-            <span>omarchy plugin add https://github.com/greenermoose/omarchy-fred-sysinfo.git --enable</span>
+            <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-sysinfo.git --enable</code>
+            <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-sysinfo.git --enable')">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+              </svg>
+            </button>
           </div>
           <div class="button-group">
-            <a href="https://github.com/greenermoose/omarchy-fred-sysinfo" class="btn btn-secondary">GitHub Repo</a>
+            <a href="https://github.com/greenermoose/omarchy-fred-sysinfo" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
           </div>
         </div>
 
         <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="card-header">
             <h3>fred.monitor</h3>
-            <span class="badge badge-blue">Planned</span>
+            <div class="badge-group">
+              <span class="badge badge-purple">Planned</span>
+            </div>
           </div>
           <p>Comprehensive display panel replacement featuring per-display link retrain/Reset and scale-aware monitor arrangement.</p>
-          <p style="margin-top: 0.5rem; font-size: 0.85rem;">Milestone A in active development.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">Milestone A in active development.</p>
         </div>
       </div>
     </section>
@@ -260,7 +375,18 @@
       <p>
         A dedicated CLI tool to inspect, install, update, and diff plugins across local workstations and official marketplace registries:
       </p>
-      <pre><code># Check live inventory and marketplace status
+      <p>
+        While commands like <code>list</code> and <code>info</code> are self-explanatory inspection tools, <code>omarchy-fred-plugin dev</code> is built specifically to power the plugin development cycle. On declarative or package-managed desktops (such as Omarchy with Home Manager), deployed plugins reside as read-only store symlinks in <code>~/.config/omarchy/plugins/</code>. Re-running a package build or system switch on every minor QML tweak slows iteration down significantly. Running <code>omarchy-fred-plugin dev &lt;id&gt; on</code> temporarily swaps the deployed plugin directory for a direct symlink to your local source repository (such as <code>omarchy-config</code>) and commands Quickshell to rescan plugins. This unlocks instant live hot-reloading: edits to QML or helper scripts reflect on your desktop the second you save. Once finished, <code>omarchy-fred-plugin dev &lt;id&gt; off</code> cleanly tears down the development symlink and restores your managed system configuration.
+      </p>
+      <div class="pre-container">
+        <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="copyCode(this, '# Check live inventory and marketplace status\nomarchy-fred-plugin list --all\n\n# Inspect verified registry data\nomarchy-fred-plugin info fred.workspaces\n\n# Fast development loop for local QML iteration\nomarchy-fred-plugin dev fred.clock on\n# ... edit QML with live Quickshell hot-reload ...\nomarchy-fred-plugin dev fred.clock off')">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+            <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+          </svg>
+          <span>Copy</span>
+        </button>
+        <pre><code># Check live inventory and marketplace status
 omarchy-fred-plugin list --all
 
 # Inspect verified registry data
@@ -270,6 +396,7 @@ omarchy-fred-plugin info fred.workspaces
 omarchy-fred-plugin dev fred.clock on
 # ... edit QML with live Quickshell hot-reload ...
 omarchy-fred-plugin dev fred.clock off</code></pre>
+      </div>
     </section>
 
     <section>
@@ -298,9 +425,39 @@ omarchy-fred-plugin dev fred.clock off</code></pre>
 
     <footer>
       <p>
-        Authored by Fred (<a href="https://github.com/greenermoose">@greenermoose</a>) &bull; Built with Omarchy Linux &bull; Licensed under GPL-3.0-or-later
+        Authored by Fred (<a href="https://github.com/greenermoose" target="_blank" rel="noopener noreferrer">@greenermoose</a>), Gemini 3.8 Flash, Codex (gpt-5.6-sol), and Claude Opus 5 &bull; Built with Omarchy Linux &bull; Licensed under GPL-3.0-or-later
       </p>
     </footer>
   </div>
+
+  <script>
+    function copyCode(btn, textToCopy) {
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        btn.classList.add('copied');
+        var originalHtml = btn.innerHTML;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg><span>Copied!</span>';
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          btn.innerHTML = originalHtml;
+        }, 2000);
+      }).catch(function(err) {
+        console.error('Failed to copy: ', err);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.card.clickable[data-href]').forEach(function(card) {
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a, button, .copy-btn, pre, code, .code-block')) {
+            return;
+          }
+          var url = card.getAttribute('data-href');
+          if (url) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

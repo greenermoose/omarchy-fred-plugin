@@ -39,5 +39,6 @@ Every repository in the `omarchy-fred-*` suite implements:
 | :-- | :-- | :-- | :-- | :-- |
 | **2026-09-13** | Ecosystem Architecture & Strategy Planning | `agy` (Antigravity CLI `1.2.2`) | Gemini 3.8 Flash (High) | Authored the 5-point ecosystem architecture plan covering CLI decoupling, marketplace status tracking, AI provenance, and public showcase. |
 | **2026-09-13** | CLI Decoupling, Scaffolding & Initial Release (v1.0.0) | `agy` (Antigravity CLI `1.2.2`) | Gemini 3.8 Flash (High) | Scaffolding `omarchy-fred-plugin` repo, decoupling CLI from machine-specific Nix paths, implementing marketplace registry queries, and creating public showcase. |
+| **2026-09-16** | Showcase Website Enhancements & Marketplace Alignment | `agy` (Antigravity CLI `1.2.4`) | Gemini 3.8 Flash (High) | Updated GitHub showcase site with marketplace links, verified badges, interactive copy buttons, dev mode documentation, and expanded AI model attributions. |
 
 Detailed prompts and decisions are recorded in [`docs/ai/sessions.md`](docs/ai/sessions.md).
