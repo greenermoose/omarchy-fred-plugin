@@ -14,7 +14,7 @@ CACHE_DIR="${HOME}/.cache/omarchy-fred-plugin"
 MARKETPLACE_REGISTRY_URL="https://raw.githubusercontent.com/omacom/omarchy-plugin-marketplace/main/registry.json"
 
 # Auto-detect local development config repository if present
-REPO_DIR="${FRED_CONFIG_REPO:-${HOME}/Code/omarchy-config}"
+REPO_DIR="${FRED_CONFIG_REPO:-${HOME}/Code/omarchy-fred-config}"
 PLUGINS_SRC="${REPO_DIR}/config/omarchy/plugins"
 
 # Known Fred plugins catalog
@@ -97,7 +97,7 @@ Subcommands:
   remove <id>       Remove an installed plugin via omarchy plugin remove
   search [query]    Search available plugins in Fred's catalog
   diff <id>         [Developer] Diff deployed plugin against local published repo
-  dev <id> on|off   [Developer] Toggle fast QML symlink override to omarchy-config
+  dev <id> on|off   [Developer] Toggle fast QML symlink override to omarchy-fred-config
 USAGE
 }
 
