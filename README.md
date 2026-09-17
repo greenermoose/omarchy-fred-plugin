@@ -110,8 +110,13 @@ For local development against an `omarchy-config` dotfiles repository:
 # Toggle fast QML development symlink override (bypasses read-only store symlinks)
 omarchy-fred-plugin dev fred.clock on
 
-# Edit QML files with instant Quickshell hot-reload:
-# ~/Code/omarchy-config/config/omarchy/plugins/fred.clock/...
+# Edit QML files in ~/Code/omarchy-config/config/omarchy/plugins/fred.clock/...
+# manifest.json edits are picked up live; QML/JS edits are not: Quickshell 0.3.1
+# cannot clear its in-memory component cache, and Qt's on-disk qmlcache trusts
+# the source mtime (a constant 1970 for Nix store files). `dev on|off` and
+# `update` purge ~/.cache/quickshell/qmlcache for the plugins and restart the
+# shell; after a plain home-manager switch do the same by hand:
+omarchy-fred-plugin dev fred.clock off   # or: omarchy-restart-shell after purging
 
 # Restore Home Manager store links when done
 omarchy-fred-plugin dev fred.clock off

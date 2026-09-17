@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 # Directories
 LIVE_DIR="${HOME}/.config/omarchy/plugins"
@@ -39,6 +39,38 @@ fail() {
 
 warn() {
   echo "omarchy-fred-plugin: warning: $*" >&2
+}
+
+# Two caches stand between a deployed plugin file and the running bar:
+#  - in memory: Quickshell 0.3.1 exposes no Qt.clearComponentCache, so the
+#    shell's plugin rescan only refreshes manifest metadata and
+#    Qt.createComponent keeps returning the code loaded at shell start;
+#  - on disk: Qt validates ~/.cache/quickshell/qmlcache/<sha1(path)>.qmlc by
+#    source mtime alone, and Nix store files all carry mtime 1970, so a
+#    redeploy at the same path is served from the stale compile even after a
+#    restart.
+# Purge the disk entries for the local plugins, then restart the shell.
+purge_qmlcache() {
+  local plugins_dir="${XDG_CONFIG_HOME:-$HOME/.config}/omarchy/plugins"
+  local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/quickshell/qmlcache"
+  [[ -d "$plugins_dir" && -d "$cache_dir" ]] || return 0
+  local src hash
+  while IFS= read -r -d '' src; do
+    hash=$(printf '%s' "$src" | sha1sum | cut -d' ' -f1)
+    rm -f -- "$cache_dir/$hash.qmlc" "$cache_dir/$hash.jsc"
+  done < <(find -L "$plugins_dir" -type f \( -name '*.qml' -o -name '*.js' -o -name '*.mjs' \) -print0 2>/dev/null)
+}
+
+reload_shell() {
+  command -v omarchy-shell >/dev/null 2>&1 || return 0
+  omarchy-shell shell rescanPlugins >/dev/null 2>&1 || true
+  purge_qmlcache
+  if command -v omarchy-restart-shell >/dev/null 2>&1; then
+    echo "restarting shell: plugin QML is cached (memory and ~/.cache/quickshell/qmlcache) until restart"
+    omarchy-restart-shell || warn "shell restart failed (locked session?); run 'omarchy-restart-shell' to load the new plugin code"
+  else
+    warn "omarchy-restart-shell not found; restart the shell to load the new plugin code"
+  fi
 }
 
 usage() {
@@ -354,9 +386,7 @@ cmd_update() {
     fi
   done
 
-  if command -v omarchy-shell >/dev/null 2>&1; then
-    omarchy-shell shell rescanPlugins >/dev/null 2>&1 || true
-  fi
+  reload_shell
 }
 
 cmd_diff() {
@@ -401,9 +431,7 @@ cmd_dev() {
 
     rm -rf "$live"
     ln -s "$deployed" "$live"
-    if command -v omarchy-shell >/dev/null 2>&1; then
-      omarchy-shell shell rescanPlugins >/dev/null 2>&1 || true
-    fi
+    reload_shell
     echo "dev: mode ON for $id -> $deployed"
   else
     if [[ -L "$live" ]]; then
@@ -420,9 +448,7 @@ cmd_dev() {
       echo "dev: note: run home-manager switch or recreate store symlinks if needed."
     fi
 
-    if command -v omarchy-shell >/dev/null 2>&1; then
-      omarchy-shell shell rescanPlugins >/dev/null 2>&1 || true
-    fi
+    reload_shell
     echo "dev: mode OFF for $id"
   fi
 }
