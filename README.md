@@ -2,14 +2,14 @@
 
 Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 
-> ### 🌐 [Visit the Live Showcase Website](https://greenermoose.github.io/omarchy-fred-plugin/)
+> ### [Visit the Live Showcase Website](https://greenermoose.github.io/omarchy-fred-plugin/)
 > **[https://greenermoose.github.io/omarchy-fred-plugin/](https://greenermoose.github.io/omarchy-fred-plugin/)**
 >
 > View interactive screenshots of every plugin, compare feature sets across releases, and explore the multi-agent AI pair-programming architecture without having to visit each repository individually!
 
 | Property | Value |
 | :-- | :-- |
-| **Showcase Website** | 🌐 **[greenermoose.github.io/omarchy-fred-plugin](https://greenermoose.github.io/omarchy-fred-plugin/)** |
+| **Showcase Website** | **[greenermoose.github.io/omarchy-fred-plugin](https://greenermoose.github.io/omarchy-fred-plugin/)** |
 | **Tool** | `omarchy-fred-plugin` |
 | **Version** | `1.0.1` |
 | **License** | GPL-3.0-or-later |

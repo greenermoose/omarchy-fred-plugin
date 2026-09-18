@@ -25,7 +25,7 @@ fi
 
 chmod +x "$TARGET"
 
-echo "✓ Successfully installed omarchy-fred-plugin to $TARGET"
+echo "Successfully installed omarchy-fred-plugin to $TARGET"
 
 if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
   echo "Note: $BIN_DIR is not in your PATH. Add it to your shell configuration (.bashrc, .zshrc):"
