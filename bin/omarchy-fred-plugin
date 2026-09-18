@@ -23,6 +23,7 @@ declare -A CATALOG_REPOS=(
   ["fred.clock"]="https://github.com/greenermoose/omarchy-fred-clock.git"
   ["fred.sysinfo"]="https://github.com/greenermoose/omarchy-fred-sysinfo.git"
   ["fred.monitor"]="https://github.com/greenermoose/omarchy-fred-monitor.git"
+  ["fred.weather"]="https://github.com/greenermoose/omarchy-fred-weather.git"
 )
 
 declare -A CATALOG_DESC=(
@@ -30,6 +31,7 @@ declare -A CATALOG_DESC=(
   ["fred.clock"]="Next-event countdown badge, multi-feed iCal sync, and interactive agenda"
   ["fred.sysinfo"]="Universal hardware telemetry and system monitoring bar plugin"
   ["fred.monitor"]="Display management panel with per-display link Reset and arrangement"
+  ["fred.weather"]="10-day outlook, 48-hour curve, and solar timeline with multi-monitor isolation"
 )
 
 fail() {

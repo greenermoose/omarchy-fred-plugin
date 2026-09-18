@@ -30,6 +30,7 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 | `fred.clock` | `v1.3.2` | Next-event countdown badge, multi-feed iCal sync, and interactive agenda | **Verified** (Outcome: Passed) |
 | `fred.sysinfo` | `v1.1.0` | Universal hardware telemetry (CPU topologies, multi-sensor thermals, memory, storage, power profiles) | Available (Submission drafted) |
 | `fred.monitor` | `Planned` | Display management panel with per-display link retrain / Reset | Planned (Milestone A) |
+| `fred.weather` | `v1.0.0` | 10-day outlook, 48-hour curve, and solar timeline with multi-monitor isolation | Ready for testing & submission |
 
 ---
 
