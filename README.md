@@ -2,14 +2,19 @@
 
 Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 
+> ### 🌐 [Visit the Live Showcase Website](https://greenermoose.github.io/omarchy-fred-plugin/)
+> **[https://greenermoose.github.io/omarchy-fred-plugin/](https://greenermoose.github.io/omarchy-fred-plugin/)**
+>
+> View interactive screenshots of every plugin, compare feature sets across releases, and explore the multi-agent AI pair-programming architecture without having to visit each repository individually!
+
 | Property | Value |
 | :-- | :-- |
+| **Showcase Website** | 🌐 **[greenermoose.github.io/omarchy-fred-plugin](https://greenermoose.github.io/omarchy-fred-plugin/)** |
 | **Tool** | `omarchy-fred-plugin` |
-| **Version** | `1.0.0` |
+| **Version** | `1.0.1` |
 | **License** | GPL-3.0-or-later |
 | **Author** | Fred (@greenermoose) |
 | **Platform** | Omarchy Linux (Arch Linux base, Hyprland, Quickshell) |
-| **Showcase** | [Fred's Omarchy Suite Showcase](https://greenermoose.github.io/omarchy-fred-plugin/) |
 
 ---
 
@@ -19,12 +24,12 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 
 ### Available Plugins in the Suite
 
-| ID | Description | Marketplace Status |
-| :-- | :-- | :-- |
-| `fred.workspaces` | Dynamic workspace indicator with multi-monitor desktop mode switcher | **Verified** (Outcome: Passed) |
-| `fred.clock` | Next-event countdown badge, multi-feed iCal sync, and interactive agenda | In Review (Issue #6509) |
-| `fred.sysinfo` | Universal hardware telemetry and system monitoring bar widget | Available (Submission drafted) |
-| `fred.monitor` | Display management panel with per-display link retrain / Reset | Planned (Milestone A) |
+| ID | Latest Version | Description | Marketplace Status |
+| :-- | :-- | :-- | :-- |
+| `fred.workspaces` | `v1.5.0` (deployed `1.5.1`) | Dynamic workspace indicator, multi-monitor desktop modes (Mac, Windows, Stock), and unused monitor idle blanking | **Verified** (Outcome: Passed) |
+| `fred.clock` | `v1.3.2` | Next-event countdown badge, multi-feed iCal sync, and interactive agenda | **Verified** (Outcome: Passed) |
+| `fred.sysinfo` | `v1.1.0` | Universal hardware telemetry (CPU topologies, multi-sensor thermals, memory, storage, power profiles) | Available (Submission drafted) |
+| `fred.monitor` | `Planned` | Display management panel with per-display link retrain / Reset | Planned (Milestone A) |
 
 ---
 
@@ -62,10 +67,10 @@ omarchy-fred-plugin list --refresh
 Example output:
 ```text
 ID                 INSTALLED  STATE      MARKETPLACE            LATEST GITHUB / LOCAL
-fred.workspaces    1.2.1      enabled    Verified               1.2
-fred.clock         1.3.0      enabled    In Review              v1.3.0
-fred.sysinfo       1.0.0      enabled    Not Listed             1.0
+fred.clock         1.3.2      enabled    Verified               1.3
 fred.monitor       none       not installed Not Listed          Available
+fred.sysinfo       1.1.0      enabled    Not Listed             1.1
+fred.workspaces    1.5.1      enabled    Verified               v1.5.0
 ```
 
 ### 2. Inspect Plugin Details

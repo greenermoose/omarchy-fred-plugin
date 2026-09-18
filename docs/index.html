@@ -117,6 +117,162 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
 
+    /* Plugin Screenshot Preview */
+    .card-preview {
+      position: relative;
+      margin: 0.75rem 0 1rem;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: #08090d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      cursor: pointer;
+    }
+
+    .card-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.2s ease;
+      padding: 4px;
+    }
+
+    .card:hover .card-preview img {
+      transform: scale(1.02);
+    }
+
+    .card-preview .zoom-hint {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      background: rgba(15, 17, 23, 0.88);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .card-preview:hover .zoom-hint,
+    .card:hover .card-preview .zoom-hint {
+      opacity: 1;
+    }
+
+    .card-preview.placeholder {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-style: dashed;
+      background: rgba(22, 25, 34, 0.4);
+      cursor: default;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .card-preview.placeholder svg {
+      width: 38px;
+      height: 38px;
+      margin-bottom: 0.5rem;
+      stroke: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 12, 18, 0.92);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 8px;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--card-border);
+      object-fit: contain;
+      background: #08090d;
+    }
+
+    .lightbox-caption {
+      margin-top: 0.75rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .lightbox-caption a {
+      color: var(--accent);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .lightbox-caption a:hover {
+      text-decoration: underline;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -2.25rem;
+      right: 0;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.75rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0.25rem 0.5rem;
+      transition: color 0.15s ease;
+    }
+
+    .lightbox-close:hover {
+      color: #fff;
+    }
+
     .card-header {
       display: flex;
       justify-content: space-between;
@@ -291,11 +447,18 @@
           <div class="card-header">
             <h3>fred.workspaces</h3>
             <div class="badge-group">
-              <span class="badge badge-gray">v1.3.1</span>
+              <span class="badge badge-gray">v1.5.0</span>
               <span class="badge badge-green">Verified</span>
             </div>
           </div>
-          <p>Dynamic workspace indicator with dual-monitor desktop mode switcher (laptop solo, dual monitor, or external presentation).</p>
+          <div class="card-preview" onclick="openLightbox('assets/workspaces-screenshot.png', 'fred.workspaces (v1.5.0) — Multi-Monitor Desktop Modes &amp; Dynamic Sets', event)">
+            <img src="assets/workspaces-screenshot.png" alt="fred.workspaces screenshot" loading="lazy">
+            <span class="zoom-hint">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+              Click to enlarge
+            </span>
+          </div>
+          <p>Dynamic workspace indicator with runtime-sized multi-monitor desktop modes (Mac, Windows, Stock) and intelligent per-monitor idle blanking of unused displays.</p>
           <div class="code-block">
             <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-workspaces.git --enable</code>
             <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-workspaces.git --enable')">
@@ -315,11 +478,18 @@
           <div class="card-header">
             <h3>fred.clock</h3>
             <div class="badge-group">
-              <span class="badge badge-gray">v1.3.1</span>
+              <span class="badge badge-gray">v1.3.2</span>
               <span class="badge badge-green">Verified</span>
             </div>
           </div>
-          <p>Next-event countdown badge on the bar, multi-feed iCalendar sync, and interactive agenda popout panel.</p>
+          <div class="card-preview" onclick="openLightbox('assets/clock-screenshot.png', 'fred.clock (v1.3.2) — Next-Event Countdown Badge &amp; Interactive Agenda', event)">
+            <img src="assets/clock-screenshot.png" alt="fred.clock screenshot" loading="lazy">
+            <span class="zoom-hint">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+              Click to enlarge
+            </span>
+          </div>
+          <p>Next-event countdown badge on the bar, multi-feed iCalendar sync, meeting quick-join, and interactive agenda popout panel.</p>
           <div class="code-block">
             <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-clock.git --enable</code>
             <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-clock.git --enable')">
@@ -339,10 +509,17 @@
           <div class="card-header">
             <h3>fred.sysinfo</h3>
             <div class="badge-group">
-              <span class="badge badge-gray">v1.0.0</span>
+              <span class="badge badge-gray">v1.1.0</span>
             </div>
           </div>
-          <p>Universal hardware monitoring: CPU topologies, multi-sensor thermals, memory, storage, and dynamic power profiles.</p>
+          <div class="card-preview" onclick="openLightbox('assets/sysinfo-screenshot.png', 'fred.sysinfo (v1.1.0) — Hardware Telemetry &amp; Dynamic Power Profiles', event)">
+            <img src="assets/sysinfo-screenshot.png" alt="fred.sysinfo screenshot" loading="lazy">
+            <span class="zoom-hint">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+              Click to enlarge
+            </span>
+          </div>
+          <p>Universal hardware monitoring: CPU topologies, multi-sensor thermals, memory, NVMe storage, dynamic power profile switcher, and btop integration.</p>
           <div class="code-block">
             <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-sysinfo.git --enable</code>
             <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-sysinfo.git --enable')">
@@ -363,6 +540,14 @@
             <div class="badge-group">
               <span class="badge badge-purple">Planned</span>
             </div>
+          </div>
+          <div class="card-preview placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span>Milestone A: Architecture &amp; Display Link Retrain</span>
           </div>
           <p>Comprehensive display panel replacement featuring per-display link retrain/Reset and scale-aware monitor arrangement.</p>
           <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">Milestone A in active development.</p>
@@ -430,6 +615,18 @@ omarchy-fred-plugin dev fred.clock off</code></pre>
     </footer>
   </div>
 
+  <!-- Lightbox Modal for Screenshots -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()" title="Close (Esc)">&times;</button>
+      <img id="lightbox-img" class="lightbox-img" src="" alt="">
+      <div class="lightbox-caption">
+        <span id="lightbox-caption-text"></span>
+        <a id="lightbox-full-link" href="" target="_blank" rel="noopener noreferrer">Open Original ↗</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     function copyCode(btn, textToCopy) {
       navigator.clipboard.writeText(textToCopy).then(function() {
@@ -445,10 +642,40 @@ omarchy-fred-plugin dev fred.clock off</code></pre>
       });
     }
 
+    function openLightbox(src, caption, event) {
+      if (event) {
+        event.stopPropagation();
+      }
+      var lightbox = document.getElementById('lightbox');
+      var img = document.getElementById('lightbox-img');
+      var captionEl = document.getElementById('lightbox-caption-text');
+      var fullLink = document.getElementById('lightbox-full-link');
+      
+      img.src = src;
+      img.alt = caption;
+      captionEl.textContent = caption;
+      fullLink.href = src;
+      
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      var lightbox = document.getElementById('lightbox');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.card.clickable[data-href]').forEach(function(card) {
         card.addEventListener('click', function(e) {
-          if (e.target.closest('a, button, .copy-btn, pre, code, .code-block')) {
+          if (e.target.closest('a, button, .copy-btn, pre, code, .code-block, .card-preview')) {
             return;
           }
           var url = card.getAttribute('data-href');
