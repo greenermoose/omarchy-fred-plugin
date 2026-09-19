@@ -1,11 +1,11 @@
-# `omarchy-fred-plugin`
+# Manage Fred's omarchy plugins (omarchy-fred-plugin)
 
 Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 
-> ### [Visit the Live Showcase Website](https://greenermoose.github.io/omarchy-fred-plugin/)
+> ### [Fred's Omarchy Plugin Showcase](https://greenermoose.github.io/omarchy-fred-plugin/)
 > **[https://greenermoose.github.io/omarchy-fred-plugin/](https://greenermoose.github.io/omarchy-fred-plugin/)**
 >
-> View interactive screenshots of every plugin, compare feature sets across releases, and explore the multi-agent AI pair-programming architecture without having to visit each repository individually!
+> See the full gallery of Fred's omarchy plugins.
 
 | Property | Value |
 | :-- | :-- |
@@ -13,7 +13,7 @@ Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 | **Tool** | `omarchy-fred-plugin` |
 | **Version** | `1.0.1` |
 | **License** | GPL-3.0-or-later |
-| **Author** | Fred (@greenermoose) |
+| **Authors** | Fred (@greenermoose), Gemini 3.8 Flash, Codex (gpt-5.6-sol), Claude Opus 5 |
 | **Platform** | Omarchy Linux (Arch Linux base, Hyprland, Quickshell) |
 
 ---
@@ -26,11 +26,11 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 
 | ID | Latest Version | Description | Marketplace Status |
 | :-- | :-- | :-- | :-- |
-| `fred.workspaces` | `v1.5.0` (deployed `1.5.1`) | Dynamic workspace indicator, multi-monitor desktop modes (Mac, Windows, Stock), and unused monitor idle blanking | **Verified** (Outcome: Passed) |
-| `fred.clock` | `v1.3.2` | Next-event countdown badge, multi-feed iCal sync, and interactive agenda | **Verified** (Outcome: Passed) |
-| `fred.sysinfo` | `v1.1.0` | Universal hardware telemetry (CPU topologies, multi-sensor thermals, memory, storage, power profiles) | Available (Submission drafted) |
-| `fred.monitor` | `Planned` | Display management panel with per-display link retrain / Reset | Planned (Milestone A) |
-| `fred.weather` | `v1.0.0` | 10-day outlook, 48-hour curve, and solar timeline with multi-monitor isolation | Ready for testing & submission |
+| `fred.workspaces` | `v1.5.1` | Workspace numbers with clickable desktop modes (Mac, Windows, Stock), dynamic Windows sets, and unused monitor idle blanking | **Verified** (Outcome: Passed) |
+| `fred.clock` | `v1.3.3` | Next-event countdown badge, multi-feed iCal sync, interactive agenda, and local event management | **Verified** (Outcome: Passed) |
+| `fred.sysinfo` | `v1.1.1` | Universal hardware telemetry (CPU topologies, multi-sensor thermals, memory, storage, power profiles) | Available (Submission drafted) |
+| `fred.monitor` | `v1.0.0` | Display management panel with per-display link retrain / Reset, position labels, and stock monitor fallback | Available (Milestone B complete) |
+| `fred.weather` | `v1.0.3` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Available (Ready for submission) |
 
 ---
 
@@ -68,10 +68,11 @@ omarchy-fred-plugin list --refresh
 Example output:
 ```text
 ID                 INSTALLED  STATE      MARKETPLACE            LATEST GITHUB / LOCAL
-fred.clock         1.3.2      enabled    Verified               1.3
-fred.monitor       none       not installed Not Listed          Available
-fred.sysinfo       1.1.0      enabled    Not Listed             1.1
-fred.workspaces    1.5.1      enabled    Verified               v1.5.0
+fred.clock         1.3.3      enabled    Verified               v1.3.3
+fred.monitor       1.0.0      enabled    Not Listed             v1.0.0
+fred.sysinfo       1.1.1      enabled    Not Listed             v1.1.1
+fred.weather       1.0.3      enabled    Not Listed             1.0.3
+fred.workspaces    1.5.1      enabled    Verified               v1.5.1
 ```
 
 ### 2. Inspect Plugin Details
@@ -133,9 +134,9 @@ omarchy-fred-plugin diff fred.clock
 
 ---
 
-## AI Collaboration & Provenance
+## Acknowledgments
 
-This project standardizes transparent AI prompt and model tracking across all `omarchy-fred-*` repositories. See [`AI_PROVENANCE.md`](AI_PROVENANCE.md) and [`docs/ai/sessions.md`](docs/ai/sessions.md) for full session logs, model versions, and architectural decisions.
+Developed through transparent multi-agent AI pair programming with [Antigravity](https://antigravity.google) (Google DeepMind), Claude (Anthropic), and Codex (OpenAI). This project standardizes transparent AI prompt and model tracking across all `omarchy-fred-*` repositories. See [`AI_PROVENANCE.md`](AI_PROVENANCE.md) and [`docs/ai/`](docs/ai/) for session logs, model versions, and architectural decisions.
 
 ---
 
