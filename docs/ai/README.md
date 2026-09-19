@@ -14,5 +14,9 @@ This directory contains individual session records documenting prompt history, t
 | 2026-09-18 | Showcase Tagline: Energy Efficiency & AI Best Practices | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-18-showcase-tagline-energy-efficiency.md`](2026-09-18-showcase-tagline-energy-efficiency.md) |
 | 2026-09-18 | README Restructuring & Multi-File AI Session Migration | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-18-readme-update-and-multi-file-session-migration.md`](2026-09-18-readme-update-and-multi-file-session-migration.md) |
 | 2026-09-18 | Showcase Screenshots for All Plugins & Repository Navigation | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-18-showcase-all-screenshots-and-repo-links.md`](2026-09-18-showcase-all-screenshots-and-repo-links.md) |
+| 2026-09-19 | Add fred.tides to Fred's Omarchy Plugin Suite | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-19-add-fred-tides-to-plugin-suite.md`](2026-09-19-add-fred-tides-to-plugin-suite.md) |
+| 2026-09-19 | Release fred.tides v1.0.3 & Marketplace Verification | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-19-release-fred-tides-v1.0.3.md`](2026-09-19-release-fred-tides-v1.0.3.md) |
 | 2026-09-19 | Showcase Layout & Navigation Improvements | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-19-showcase-layout-and-navigation-improvements.md`](2026-09-19-showcase-layout-and-navigation-improvements.md) |
+| 2026-09-19 | Showcase Motivation & Values Refinement | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-19-showcase-motivation-and-values-refinement.md`](2026-09-19-showcase-motivation-and-values-refinement.md) |
+
 
