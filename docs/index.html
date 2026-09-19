@@ -476,7 +476,7 @@
         </div>
         <div class="card">
           <h3>Tailored Desktop Suite</h3>
-          <p>The personal <code>fred.*</code> plugin suite enhances the bar and popouts for multi-calendar scheduling, multi-monitor desktop switching, weather forecasting, display recovery, and deep hardware telemetry.</p>
+          <p>The personal <code>fred.*</code> plugin suite enhances the bar and popouts for multi-calendar scheduling, multi-monitor desktop switching, weather forecasting, ocean tide telemetry, display recovery, and deep hardware telemetry.</p>
         </div>
       </div>
     </section>
@@ -601,6 +601,35 @@
           </div>
           <div class="button-group">
             <a href="https://github.com/greenermoose/omarchy-fred-weather" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+          </div>
+        </div>
+
+        <div class="card clickable" data-href="https://github.com/greenermoose/omarchy-fred-tides">
+          <div class="card-header">
+            <h3>fred.tides</h3>
+            <div class="badge-group">
+              <span class="badge badge-gray">v1.0.2</span>
+            </div>
+          </div>
+          <div class="card-preview" onclick="openLightbox('assets/tides-screenshot.png', 'fred.tides (v1.0.2) — 24-Hour Scrubbable Curve, Range Bar &amp; Daily Tides', event)">
+            <img src="assets/tides-screenshot.png" alt="fred.tides screenshot" loading="lazy">
+            <span class="zoom-hint">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+              Click to enlarge
+            </span>
+          </div>
+          <p>Ocean tide telemetry for Omarchy: 24-hour scrubbable Catmull-Rom tide curve, vertical range bar with real-time water level indicator, 4 daily high/low tide cards, and multi-monitor focus isolation.</p>
+          <div class="code-block">
+            <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-tides.git --enable</code>
+            <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-tides.git --enable')">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="button-group">
+            <a href="https://github.com/greenermoose/omarchy-fred-tides" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
           </div>
         </div>
 

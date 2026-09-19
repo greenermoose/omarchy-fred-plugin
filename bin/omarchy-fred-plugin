@@ -24,6 +24,7 @@ declare -A CATALOG_REPOS=(
   ["fred.sysinfo"]="https://github.com/greenermoose/omarchy-fred-sysinfo.git"
   ["fred.monitor"]="https://github.com/greenermoose/omarchy-fred-monitor.git"
   ["fred.weather"]="https://github.com/greenermoose/omarchy-fred-weather.git"
+  ["fred.tides"]="https://github.com/greenermoose/omarchy-fred-tides.git"
 )
 
 declare -A CATALOG_DESC=(
@@ -32,6 +33,7 @@ declare -A CATALOG_DESC=(
   ["fred.sysinfo"]="Universal hardware telemetry and system monitoring bar plugin"
   ["fred.monitor"]="Display management panel with per-display link Reset and arrangement"
   ["fred.weather"]="10-day outlook, 48-hour curve, and solar timeline with multi-monitor isolation"
+  ["fred.tides"]="Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline"
 )
 
 fail() {

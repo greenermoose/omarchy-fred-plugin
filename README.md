@@ -31,6 +31,7 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 | `fred.sysinfo` | `v1.1.1` | Universal hardware telemetry (CPU topologies, multi-sensor thermals, memory, storage, power profiles) | Available (Submission drafted) |
 | `fred.monitor` | `v1.0.0` | Display management panel with per-display link retrain / Reset, position labels, and stock monitor fallback | Available (Milestone B complete) |
 | `fred.weather` | `v1.0.3` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Available (Ready for submission) |
+| `fred.tides` | `1.0.2` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Available (In testing) |
 
 ---
 
@@ -71,6 +72,7 @@ ID                 INSTALLED  STATE      MARKETPLACE            LATEST GITHUB / 
 fred.clock         1.3.3      enabled    Verified               v1.3.3
 fred.monitor       1.0.0      enabled    Not Listed             v1.0.0
 fred.sysinfo       1.1.1      enabled    Not Listed             v1.1.1
+fred.tides         1.0.2      enabled    Not Listed             1.0.2
 fred.weather       1.0.3      enabled    Not Listed             1.0.3
 fred.workspaces    1.5.1      enabled    Verified               v1.5.1
 ```
