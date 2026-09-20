@@ -52,5 +52,6 @@ Every repository in the `omarchy-fred-*` suite implements:
 
 | [**2026-09-19**](docs/ai/2026-09-19-add-fred-keyboard-to-plugin-suite.md) | Add fred.keyboard to Fred's Omarchy Plugin Suite | `claude` (Claude Code `2.1.278`) | Claude Opus 5 (`claude-opus-5`) | Created the public `omarchy-fred-keyboard` repository at v0.1.0 (pre-release, untagged), registered it in both CLI catalog copies, added the README suite row and CLI example, and added the showcase card. |
 | [**2026-09-20**](docs/ai/2026-09-20-publish-fred-sysinfo-v1.1.2-hover.md) | Publish fred.sysinfo v1.1.2 Resource Hover | `codex` (Codex CLI `0.155.1`) | GPT-5.6 Sol (`gpt-5.6-sol`) | Updated the suite catalog and GitHub Pages showcase to v1.1.2, replacing the sysinfo preview with an authentic MSI screenshot of the fresh CPU/RAM/disk hover. |
+| [**2026-09-20**](docs/ai/2026-09-20-publish-fred-keyboard-v0.2.2.md) | Publish fred.keyboard v0.2.2 (pre-release) | `claude` (Claude Code `2.1.278`) | Claude Opus 5 (`claude-opus-5`) | Synced 0.2.2 (capture mode, binding overlay from `hyprctl binds`, mouse capture, cross-monitor panel, orphan list) to the public repo; updated the suite README row, CLI example and showcase card badge/description. Screenshot refresh pending Fred. |
 
 Detailed prompts and decisions are recorded in individual session logs under [`docs/ai/`](docs/ai/).

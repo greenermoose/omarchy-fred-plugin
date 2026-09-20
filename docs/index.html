@@ -621,17 +621,17 @@
           <div class="card-header">
             <h3>fred.keyboard</h3>
             <div class="badge-group">
-              <span class="badge badge-gray">v0.1.0</span>
+              <span class="badge badge-gray">v0.2.2</span>
             </div>
           </div>
-          <div class="card-preview" onclick="openLightbox('assets/keyboard-screenshot.png', 'fred.keyboard (v0.1.0) &mdash; Your Actual Keyboard, Drawn From a Field-Observed Layout', event)">
+          <div class="card-preview" onclick="openLightbox('assets/keyboard-screenshot.png', 'fred.keyboard (v0.2.2) &mdash; Your Actual Keyboard, Drawn From a Field-Observed Layout', event)">
             <img src="assets/keyboard-screenshot.png" alt="fred.keyboard screenshot" loading="lazy">
             <span class="zoom-hint">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
               Click to enlarge
             </span>
           </div>
-          <p>Keyboard shortcut explorer that draws <em>your</em> keyboard, not a generic one. Layouts come from the OS XKB geometries plus a field-observed library for boards no stock geometry describes correctly. Keys light up as you press them, Caps and Num Lock are read from the real hardware LEDs, and keys the OS never sees are marked as such. Not a keylogger: key capture is panel-scoped, so nothing typed in any other window is ever visible.</p>
+          <p>Keyboard shortcut explorer that draws <em>your</em> keyboard, not a generic one. Layouts come from the OS XKB geometries plus a field-observed library for boards no stock geometry describes correctly. Keys with Hyprland binds are tinted; switch on capture mode and any combination or mouse action, <code>Super+K</code> or <code>Super</code>+right-click, reaches the panel instead of running, and the panel says what it would have done. Binds your keyboard cannot send are listed rather than lost. Caps and Num Lock come from the real hardware LEDs. Not a keylogger: capture is panel-scoped, so nothing typed in any other window is ever visible.</p>
           <div class="code-block">
             <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-keyboard.git --enable</code>
             <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-keyboard.git --enable')">
