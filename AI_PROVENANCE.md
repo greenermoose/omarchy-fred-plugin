@@ -50,4 +50,6 @@ Every repository in the `omarchy-fred-*` suite implements:
 | [**2026-09-19**](docs/ai/2026-09-19-showcase-layout-and-navigation-improvements.md) | Showcase Layout & Navigation Improvements | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | Reordered showcase flow (Standardization Strategy below plugin cards), removed Plugin Catalog heading for direct hero-to-cards view, enabled full-width curl display without scroll, added top-line v1.0.1 badge, and linked ecosystem chip. |
 | [**2026-09-19**](docs/ai/2026-09-19-showcase-motivation-and-values-refinement.md) | Showcase Motivation & Values Refinement | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | Replaced Standardization Strategy with Motivation & Values section reflecting hardware longevity, AI introspection/repair, fleet standardization, and community hacker gatherings. |
 
+| [**2026-09-19**](docs/ai/2026-09-19-add-fred-keyboard-to-plugin-suite.md) | Add fred.keyboard to Fred's Omarchy Plugin Suite | `claude` (Claude Code `2.1.278`) | Claude Opus 5 (`claude-opus-5`) | Created the public `omarchy-fred-keyboard` repository at v0.1.0 (pre-release, untagged), registered it in both CLI catalog copies, added the README suite row and CLI example, and added the showcase card. |
+
 Detailed prompts and decisions are recorded in individual session logs under [`docs/ai/`](docs/ai/).
