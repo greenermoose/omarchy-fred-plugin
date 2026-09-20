@@ -28,7 +28,7 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 | :-- | :-- | :-- | :-- |
 | `fred.workspaces` | `v1.5.1` | Workspace numbers with clickable desktop modes (Mac, Windows, Stock), dynamic Windows sets, and unused monitor idle blanking | **Verified** (Outcome: Passed) |
 | `fred.clock` | `v1.3.3` | Next-event countdown badge, multi-feed iCal sync, interactive agenda, and local event management | **Verified** (Outcome: Passed) |
-| `fred.sysinfo` | `v1.1.1` | Universal hardware telemetry (CPU topologies, multi-sensor thermals, memory, storage, power profiles) | Available (Submission drafted) |
+| `fred.sysinfo` | `v1.1.2` | Universal hardware telemetry with a fresh CPU, available RAM, and free-disk hover summary | Available (In testing) |
 | `fred.monitor` | `v1.0.0` | Display management panel with per-display link retrain / Reset, position labels, and stock monitor fallback | Available (Milestone B complete) |
 | `fred.weather` | `v1.0.3` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Available (Ready for submission) |
 | `fred.tides` | `v1.0.3` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Available (Submission #7664) |
@@ -73,7 +73,7 @@ ID                 INSTALLED  STATE      MARKETPLACE            LATEST GITHUB / 
 fred.clock         1.3.3      enabled    Verified               v1.3.3
 fred.keyboard      0.1.0      enabled    Not Listed             v0.1.0
 fred.monitor       1.0.0      enabled    Not Listed             v1.0.0
-fred.sysinfo       1.1.1      enabled    Not Listed             v1.1.1
+fred.sysinfo       1.1.2      enabled    Not Listed             v1.1.2
 fred.tides         1.0.3      enabled    Not Listed             v1.0.3
 fred.weather       1.0.3      enabled    Not Listed             1.0.3
 fred.workspaces    1.5.1      enabled    Verified               v1.5.1

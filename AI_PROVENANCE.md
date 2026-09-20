@@ -11,7 +11,7 @@ Rather than relying on a single AI model or interface, Fred uses a specialized t
 | Tool & Interface | CLI Version | Backing Models | Primary Role in the Ecosystem |
 | :-- | :-- | :-- | :-- |
 | **Claude Code** (`claude`) | `2.1.267` | Claude Opus 5 (`claude-opus-5`) | **Architecture & System Planning**: Authoring durable system specifications, multi-step runbooks, and cross-cutting policies. |
-| **Codex CLI** (`codex`) | `0.154.0` | `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra` | **Architecture & System Planning**: Second opinion on plans and specifications alongside Claude. |
+| **Codex CLI** (`codex`) | `0.155.1` | `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra` | **Architecture & System Planning**: Second opinion on plans and specifications alongside Claude. |
 | **Antigravity CLI** (`agy`) | `1.2.2` – `1.2.6` | Gemini 3.8 Flash (High) | **Coding, Refactoring & Implementation**: Primary coding partner for multi-file pair-programming, security remediation, bash/Python/QML engineering, and git release workflow. |
 | **OpenCode** (`opencode`) | `1.18.30` | Big Pickle | **Distro & System Q&A**: Efficient lookups for Arch Linux / Omarchy package specifics and shell configuration, conserving frontier-model token budgets. |
 | **Grok CLI** (`grok`) | `1.0.25` (`f7e67d6988e2`, stable) | Grok 4.6 | **Workstation Support**: Additional debugging, hardware diagnostics, and alternative implementation analysis. |
@@ -51,5 +51,6 @@ Every repository in the `omarchy-fred-*` suite implements:
 | [**2026-09-19**](docs/ai/2026-09-19-showcase-motivation-and-values-refinement.md) | Showcase Motivation & Values Refinement | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | Replaced Standardization Strategy with Motivation & Values section reflecting hardware longevity, AI introspection/repair, fleet standardization, and community hacker gatherings. |
 
 | [**2026-09-19**](docs/ai/2026-09-19-add-fred-keyboard-to-plugin-suite.md) | Add fred.keyboard to Fred's Omarchy Plugin Suite | `claude` (Claude Code `2.1.278`) | Claude Opus 5 (`claude-opus-5`) | Created the public `omarchy-fred-keyboard` repository at v0.1.0 (pre-release, untagged), registered it in both CLI catalog copies, added the README suite row and CLI example, and added the showcase card. |
+| [**2026-09-20**](docs/ai/2026-09-20-publish-fred-sysinfo-v1.1.2-hover.md) | Publish fred.sysinfo v1.1.2 Resource Hover | `codex` (Codex CLI `0.155.1`) | GPT-5.6 Sol (`gpt-5.6-sol`) | Updated the suite catalog and GitHub Pages showcase to v1.1.2, replacing the sysinfo preview with an authentic MSI screenshot of the fresh CPU/RAM/disk hover. |
 
 Detailed prompts and decisions are recorded in individual session logs under [`docs/ai/`](docs/ai/).
