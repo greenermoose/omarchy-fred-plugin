@@ -26,6 +26,7 @@ declare -A CATALOG_REPOS=(
   ["fred.weather"]="https://github.com/greenermoose/omarchy-fred-weather.git"
   ["fred.tides"]="https://github.com/greenermoose/omarchy-fred-tides.git"
   ["fred.keyboard"]="https://github.com/greenermoose/omarchy-fred-keyboard.git"
+  ["fred.agents"]="https://github.com/greenermoose/omarchy-fred-agents.git"
 )
 
 declare -A CATALOG_DESC=(
@@ -36,6 +37,7 @@ declare -A CATALOG_DESC=(
   ["fred.weather"]="10-day outlook, 48-hour curve, and solar timeline with multi-monitor isolation"
   ["fred.tides"]="Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline"
   ["fred.keyboard"]="Keyboard shortcut explorer: see which keys run which commands on a model of your keyboard"
+  ["fred.agents"]="AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor prompt/token activity at a glance"
 )
 
 fail() {

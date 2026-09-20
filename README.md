@@ -33,6 +33,7 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 | `fred.weather` | `v1.0.3` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Available (Ready for submission) |
 | `fred.tides` | `v1.0.3` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Available (Submission #7664) |
 | `fred.keyboard` | `v1.0.0` | Keyboard shortcut visualizer: your actual keyboard, bound keys tinted, capture mode that tells you what any key combination or mouse action runs, and search from a command to its keys | Released; marketplace submission #7860 validated, awaiting listing review |
+| `fred.agents` | `v1.0.0` | AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor prompt/token activity at a glance | Available (In testing) |
 
 ---
 
@@ -70,6 +71,7 @@ omarchy-fred-plugin list --refresh
 Example output:
 ```text
 ID                 INSTALLED  STATE      MARKETPLACE            LATEST GITHUB / LOCAL
+fred.agents        1.0.0      enabled    Not Listed             v1.0.0
 fred.clock         1.3.3      enabled    Verified               v1.3.3
 fred.keyboard      1.0.0      enabled    Not Listed             v1.0.0
 fred.monitor       1.0.0      enabled    Not Listed             v1.0.0
