@@ -18,5 +18,4 @@ This directory contains individual session records documenting prompt history, t
 | 2026-09-19 | Release fred.tides v1.0.3 & Marketplace Verification | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-19-release-fred-tides-v1.0.3.md`](2026-09-19-release-fred-tides-v1.0.3.md) |
 | 2026-09-19 | Showcase Layout & Navigation Improvements | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-19-showcase-layout-and-navigation-improvements.md`](2026-09-19-showcase-layout-and-navigation-improvements.md) |
 | 2026-09-19 | Showcase Motivation & Values Refinement | `agy` (Antigravity CLI `1.2.6`) | Gemini 3.8 Flash (High) | [`2026-09-19-showcase-motivation-and-values-refinement.md`](2026-09-19-showcase-motivation-and-values-refinement.md) |
-
-
+| 2026-09-19 | Add fred.keyboard to Fred's Omarchy Plugin Suite | `claude` (Claude Code `2.1.278`) | Claude Opus 5 (`claude-opus-5`) | [`2026-09-19-add-fred-keyboard-to-plugin-suite.md`](2026-09-19-add-fred-keyboard-to-plugin-suite.md) |
