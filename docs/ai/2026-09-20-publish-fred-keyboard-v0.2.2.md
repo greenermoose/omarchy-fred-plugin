@@ -36,3 +36,14 @@ approved the recommendation to publish it: *"Make it so"*.
 - `omarchy-fred-plugin diff fred.keyboard`: only the intended README,
   assets, docs and repo housekeeping differ.
 - Both public branches match their remotes after push; no tags at HEAD.
+
+## Follow-up the same day: release v1.0.0
+
+Fred said `Release version 1.0.0 of fred.keyboard`. 0.3.6 (the last of the
+day's development versions) was renumbered 1.0.0 with no code change,
+tagged (`v1.0.0`, `1.0.0`, `v1.0`, `1.0`), pushed and released on GitHub at
+commit `95e43dc7122ea8202adb64d614ede8df976acba5`. Suite README row and
+CLI example updated to 1.0.0; the showcase card's badge, lightbox title and
+preview image replaced with the real 1.0.0 screenshot (Fred set the panel
+up on the MSI monitor, the agent captured it). Show & Tell thread and
+marketplace submission follow after Fred's review of each text.
