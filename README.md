@@ -32,7 +32,7 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 | `fred.monitor` | `v1.0.0` | Display management panel with per-display link retrain / Reset, position labels, and stock monitor fallback | Available (Milestone B complete) |
 | `fred.weather` | `v1.0.3` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Available (Ready for submission) |
 | `fred.tides` | `v1.0.3` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Available (Submission #7664) |
-| `fred.keyboard` | `v1.0.0` | Keyboard shortcut visualizer: your actual keyboard, bound keys tinted, capture mode that tells you what any key combination or mouse action runs, and search from a command to its keys | Released (marketplace submission pending) |
+| `fred.keyboard` | `v1.0.0` | Keyboard shortcut visualizer: your actual keyboard, bound keys tinted, capture mode that tells you what any key combination or mouse action runs, and search from a command to its keys | Released; marketplace submission #7860 validated, awaiting listing review |
 
 ---
 
