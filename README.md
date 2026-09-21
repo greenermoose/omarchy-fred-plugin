@@ -131,11 +131,13 @@ omarchy-fred-plugin dev fred.clock on
 # shell; after a plain home-manager switch do the same by hand:
 omarchy-fred-plugin dev fred.clock off   # or: omarchy-restart-shell after purging
 
-# Restore Home Manager store links when done. This runs a home-manager
-# switch, so it refuses to proceed while any *other* fred.* plugin is still
-# dev-linked (Home Manager resolves files through such a link and would
-# overwrite a differing file in the repo with a store link) or while the
-# plugin has uncommitted changes (the generation is built from the git tree).
+# Restore Home Manager store links when done. This removes the plugin's dev
+# link, then runs a home-manager switch only if it was the last fred.* dev
+# link; while others remain the switch is skipped with a warning and the
+# plugin stays undeployed until the last one is turned off (Home Manager
+# resolves files through a remaining dev link and would overwrite a differing
+# file in the repo with a store link). It refuses while the plugin has
+# uncommitted changes (the generation is built from the git tree).
 omarchy-fred-plugin dev fred.clock off
 
 # Diff local deployed config against public published repo

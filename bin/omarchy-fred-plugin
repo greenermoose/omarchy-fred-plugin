@@ -442,28 +442,19 @@ cmd_dev() {
     reload_shell
     echo "dev: mode ON for $id -> $deployed"
   else
-    # Guards before anything is touched. `dev off` ends in a home-manager
-    # switch, and Home Manager resolves every managed file *through* any dev
-    # symlink still present: identical files are skipped, but a file that
-    # differs from the git tree is replaced in the repo's working tree by a
-    # store link (ln -Tsf; HM 26.11 link script). So: no other dev link may
-    # exist, and this plugin must be committed so the generation matches.
-    local other others=()
-    for other in "$LIVE_DIR"/fred.*; do
-      [[ -L "$other" ]] || continue
-      [[ "$(basename "$other")" == "$id" ]] && continue
-      others+=("$(basename "$other") -> $(readlink "$other")")
-    done
-    if (( ${#others[@]} > 0 )); then
-      printf 'dev: refusing to switch: other plugins are still in dev mode:\n' >&2
-      printf '  %s\n' "${others[@]}" >&2
-      fail "turn each of them off first (omarchy-fred-plugin dev <id> off), or a home-manager switch could overwrite their files in $REPO_DIR"
-    fi
+    # `dev off` ends in a home-manager switch, and Home Manager resolves every
+    # managed file *through* any dev symlink still present: identical files
+    # are skipped, but a file that differs from the git tree is replaced in
+    # the repo's working tree by a store link (ln -Tsf; HM 26.11 link script).
+    # So the requested link is always removed, but the switch runs only once
+    # the last dev link is gone; until then reconciliation is deferred. The
+    # plugin must be committed either way, since the deferred generation is
+    # built from the git tree and only this call checks this plugin.
     if git -C "$REPO_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
       local dirty
       dirty="$(git -C "$REPO_DIR" status --porcelain --untracked-files=all -- "config/omarchy/plugins/$id" 2>/dev/null || true)"
       if [[ -n "$dirty" ]]; then
-        printf 'dev: refusing to switch: uncommitted changes under config/omarchy/plugins/%s:\n%s\n' "$id" "$dirty" >&2
+        printf 'dev: refusing to leave dev mode: uncommitted changes under config/omarchy/plugins/%s:\n%s\n' "$id" "$dirty" >&2
         fail "commit them first; the Home Manager generation is built from the git tree, so untracked files would be left out and the deployed plugin would not match"
       fi
     fi
@@ -475,8 +466,17 @@ cmd_dev() {
       echo "dev: $live is not a dev symlink"
     fi
 
-    if command -v home-manager >/dev/null 2>&1 && [[ -f "$REPO_DIR/flake.nix" ]]; then
-      echo "dev: restoring Home Manager configuration..."
+    local other others=()
+    for other in "$LIVE_DIR"/fred.*; do
+      [[ -L "$other" ]] || continue
+      others+=("$(basename "$other") -> $(readlink "$other")")
+    done
+    if (( ${#others[@]} > 0 )); then
+      printf 'dev: warning: other plugins are still in dev mode:\n' >&2
+      printf '  %s\n' "${others[@]}" >&2
+      printf 'dev: warning: skipping home-manager switch; %s stays undeployed until the last dev link is turned off (a switch now could overwrite their files in %s)\n' "$id" "$REPO_DIR" >&2
+    elif command -v home-manager >/dev/null 2>&1 && [[ -f "$REPO_DIR/flake.nix" ]]; then
+      echo "dev: last dev link removed; restoring Home Manager configuration..."
       home-manager switch --flake "${REPO_DIR}#fred"
     else
       echo "dev: note: run home-manager switch or recreate store symlinks if needed."
