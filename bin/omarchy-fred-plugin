@@ -6,11 +6,13 @@
 
 set -euo pipefail
 
-VERSION="1.0.1"
+VERSION="1.1.0"
 
 # Directories
 LIVE_DIR="${FRED_LIVE_DIR:-${HOME}/.config/omarchy/plugins}"
 CACHE_DIR="${HOME}/.cache/omarchy-fred-plugin"
+TEST_ROOT="${FRED_TEST_ROOT:-${XDG_STATE_HOME:-${HOME}/.local/state}/omarchy-fred-plugin/test}"
+PUBLISHED_ROOT="${FRED_PUBLISHED_ROOT:-${HOME}/Code}"
 MARKETPLACE_REGISTRY_URL="https://raw.githubusercontent.com/omacom/omarchy-plugin-marketplace/main/registry.json"
 
 # Auto-detect local development config repository if present
@@ -94,6 +96,7 @@ Usage:
   omarchy-fred-plugin search [query]
   omarchy-fred-plugin diff <id>
   omarchy-fred-plugin dev <id> on|off
+  omarchy-fred-plugin test <id> [worktree|<git-ref>|undo|off|status]
   omarchy-fred-plugin --version
   omarchy-fred-plugin --help
 
@@ -106,7 +109,290 @@ Subcommands:
   search [query]    Search available plugins in Fred's catalog
   diff <id>         [Developer] Diff deployed plugin against local published repo
   dev <id> on|off   [Developer] Toggle fast QML symlink override to omarchy-fred-config
+  test <id> [...]   [Developer] Test immutable snapshots from the published repo
 USAGE
+}
+
+validate_plugin_id() {
+  local id="$1"
+  [[ "$id" =~ ^fred\.[A-Za-z0-9][A-Za-z0-9._-]*$ ]] ||
+    fail "invalid plugin id '$id' (expected fred.<name>)"
+}
+
+test_state_dir() {
+  printf '%s/%s\n' "$TEST_ROOT" "$1"
+}
+
+test_link_target() {
+  local link="$1"
+  [[ -L "$link" ]] || return 1
+  readlink -f -- "$link"
+}
+
+is_test_snapshot() {
+  local id="$1"
+  local path="$2"
+  local snapshots
+  snapshots="$(test_state_dir "$id")/snapshots"
+  [[ "$path" == "$snapshots"/* ]]
+}
+
+set_state_link() {
+  local link="$1"
+  local target="$2"
+  local tmp="${link}.tmp.$$"
+  rm -f -- "$tmp"
+  ln -s -- "$target" "$tmp"
+  mv -Tf -- "$tmp" "$link"
+}
+
+switch_live_to_snapshot() {
+  local id="$1"
+  local snapshot="$2"
+  local live="$LIVE_DIR/$id"
+  local tmp="$LIVE_DIR/.${id}.test.$$"
+
+  if [[ -e "$live" && ! -L "$live" ]]; then
+    fail "test state is inconsistent: $live is not the expected test symlink"
+  fi
+  if [[ -L "$live" ]]; then
+    local current
+    current="$(readlink -f -- "$live")"
+    is_test_snapshot "$id" "$current" ||
+      fail "refusing to replace non-test symlink $live -> $(readlink "$live")"
+  fi
+
+  rm -f -- "$tmp"
+  ln -s -- "$snapshot" "$tmp"
+  mv -Tf -- "$tmp" "$live"
+}
+
+write_snapshot_metadata() {
+  local metadata="$1"
+  local source="$2"
+  local requested_ref="$3"
+  local commit="$4"
+  local dirty="$5"
+  {
+    printf 'source: %s\n' "$source"
+    printf 'requested-ref: %s\n' "$requested_ref"
+    printf 'commit: %s\n' "$commit"
+    printf 'working-tree-dirty: %s\n' "$dirty"
+    printf 'created-at: %s\n' "$(date --iso-8601=seconds)"
+  } > "$metadata"
+}
+
+create_test_snapshot() {
+  local id="$1"
+  local requested_ref="$2"
+  local suffix="${id#fred.}"
+  local source="$PUBLISHED_ROOT/omarchy-fred-${suffix}"
+  local state snapshots stage commit dirty label snapshot manifest_id
+
+  [[ -d "$source/.git" ]] ||
+    fail "published repository not found: $source (set FRED_PUBLISHED_ROOT to customize)"
+  command -v git >/dev/null 2>&1 || fail "git is required for test snapshots"
+  command -v tar >/dev/null 2>&1 || fail "tar is required for test snapshots"
+  command -v jq >/dev/null 2>&1 || fail "jq is required for test snapshots"
+
+  state="$(test_state_dir "$id")"
+  snapshots="$state/snapshots"
+  mkdir -p -- "$snapshots"
+  stage="$snapshots/.tmp.$$"
+  rm -rf -- "$stage"
+  mkdir -- "$stage"
+
+  if [[ "$requested_ref" == "worktree" ]]; then
+    commit="$(git -C "$source" rev-parse --short=12 HEAD 2>/dev/null || printf 'unborn')"
+    if [[ -n "$(git -C "$source" status --porcelain --untracked-files=all)" ]]; then
+      dirty="yes"
+    else
+      dirty="no"
+    fi
+    if ! tar --exclude='./.git' --exclude='./.git/*' -C "$source" -cf - . |
+      tar -C "$stage" -xf -; then
+      rm -rf -- "$stage"
+      fail "could not snapshot working tree at $source"
+    fi
+  else
+    commit="$(git -C "$source" rev-parse --verify "$requested_ref^{commit}" 2>/dev/null)" || {
+      rm -rf -- "$stage"
+      fail "unknown git ref '$requested_ref' in $source"
+    }
+    commit="${commit:0:12}"
+    dirty="not-applicable"
+    if ! git -C "$source" archive "$requested_ref" | tar -C "$stage" -xf -; then
+      rm -rf -- "$stage"
+      fail "could not snapshot git ref '$requested_ref'"
+    fi
+  fi
+
+  [[ -f "$stage/manifest.json" ]] || {
+    rm -rf -- "$stage"
+    fail "snapshot has no manifest.json"
+  }
+  manifest_id="$(jq -r '.id // empty' "$stage/manifest.json")"
+  [[ "$manifest_id" == "$id" ]] || {
+    rm -rf -- "$stage"
+    fail "snapshot manifest id '$manifest_id' does not match requested id '$id'"
+  }
+
+  if command -v omarchy >/dev/null 2>&1; then
+    if ! omarchy plugin validate "$stage" >&2; then
+      rm -rf -- "$stage"
+      fail "plugin validation failed; the running plugin was not changed"
+    fi
+  elif command -v omarchy-plugin-validate >/dev/null 2>&1; then
+    if ! omarchy-plugin-validate "$stage" >&2; then
+      rm -rf -- "$stage"
+      fail "plugin validation failed; the running plugin was not changed"
+    fi
+  else
+    rm -rf -- "$stage"
+    fail "omarchy plugin validation command not found"
+  fi
+
+  label="$(date +%Y%m%d-%H%M%S)-${commit}"
+  [[ "$dirty" == "yes" ]] && label="${label}-dirty"
+  snapshot="$snapshots/${label}-$$"
+  mv -- "$stage" "$snapshot"
+  find "$snapshot" -type d -exec chmod u+rwx,go-rwx {} +
+  find "$snapshot" -type f -exec chmod a-w {} +
+  write_snapshot_metadata "${snapshot}.meta" "$source" "$requested_ref" "$commit" "$dirty"
+  printf '%s\n' "$snapshot"
+}
+
+enter_test_mode() {
+  local id="$1"
+  local state live
+  state="$(test_state_dir "$id")"
+  live="$LIVE_DIR/$id"
+
+  if [[ -f "$state/active" ]]; then
+    [[ -L "$live" ]] || fail "test state is inconsistent: active marker exists but $live is not a symlink"
+    local target
+    target="$(readlink -f -- "$live")"
+    is_test_snapshot "$id" "$target" ||
+      fail "test state is inconsistent: $live does not point to a managed test snapshot"
+    return 0
+  fi
+
+  if [[ -L "$live" ]]; then
+    fail "$live is already a symlink; leave dev mode before entering snapshot test mode"
+  fi
+  if [[ -e "$state/original" || -e "$state/original.absent" ]]; then
+    fail "stale test recovery state exists at $state; inspect it before continuing"
+  fi
+
+  mkdir -p -- "$state" "$LIVE_DIR"
+  rm -f -- "$state/current" "$state/previous"
+  if [[ -e "$live" ]]; then
+    mv -- "$live" "$state/original"
+  else
+    : > "$state/original.absent"
+  fi
+  : > "$state/active"
+}
+
+cmd_test_status() {
+  local id="$1"
+  local state live target
+  state="$(test_state_dir "$id")"
+  live="$LIVE_DIR/$id"
+
+  if [[ ! -f "$state/active" ]]; then
+    echo "test: mode OFF for $id"
+    return 0
+  fi
+  [[ -L "$live" ]] || fail "test state is inconsistent: $live is not a symlink"
+  target="$(readlink -f -- "$live")"
+  is_test_snapshot "$id" "$target" || fail "test state is inconsistent: live target is outside $state/snapshots"
+  echo "test: mode ON for $id"
+  echo "snapshot: $target"
+  [[ -f "${target}.meta" ]] && sed 's/^/  /' "${target}.meta"
+}
+
+cmd_test_off() {
+  local id="$1"
+  local state live target
+  state="$(test_state_dir "$id")"
+  live="$LIVE_DIR/$id"
+
+  [[ -f "$state/active" ]] || {
+    echo "test: mode is already OFF for $id"
+    return 0
+  }
+  [[ -L "$live" ]] || fail "refusing to restore: $live is not the expected test symlink"
+  target="$(readlink -f -- "$live")"
+  is_test_snapshot "$id" "$target" || fail "refusing to restore: live target is outside $state/snapshots"
+
+  if [[ -e "$state/original" ]]; then
+    rm -- "$live"
+    mv -- "$state/original" "$live"
+  elif [[ -e "$state/original.absent" ]]; then
+    rm -- "$live"
+    rm -- "$state/original.absent"
+  else
+    fail "original live plugin state is missing from $state"
+  fi
+  rm -f -- "$state/active" "$state/current" "$state/previous"
+  reload_shell
+  echo "test: mode OFF for $id; restored the original live plugin"
+}
+
+cmd_test_undo() {
+  local id="$1"
+  local state current previous
+  state="$(test_state_dir "$id")"
+  [[ -f "$state/active" ]] || fail "$id is not in snapshot test mode"
+  current="$(test_link_target "$state/current")" || fail "current test snapshot is missing"
+  previous="$(test_link_target "$state/previous")" ||
+    fail "no previous test snapshot; use 'omarchy-fred-plugin test $id off' to restore the managed version"
+  is_test_snapshot "$id" "$current" || fail "current snapshot pointer is invalid"
+  is_test_snapshot "$id" "$previous" || fail "previous snapshot pointer is invalid"
+
+  set_state_link "$state/current" "$previous"
+  set_state_link "$state/previous" "$current"
+  switch_live_to_snapshot "$id" "$previous"
+  reload_shell
+  echo "test: $id restored snapshot $previous"
+}
+
+cmd_test() {
+  local id="${1:-}"
+  local action="${2:-worktree}"
+  [[ -n "$id" ]] || fail "test requires a plugin id (e.g. fred.agents)"
+  validate_plugin_id "$id"
+  umask 077
+
+  case "$action" in
+    status)
+      cmd_test_status "$id"
+      ;;
+    off)
+      cmd_test_off "$id"
+      ;;
+    undo)
+      cmd_test_undo "$id"
+      ;;
+    *)
+      local state snapshot old_current
+      state="$(test_state_dir "$id")"
+      snapshot="$(create_test_snapshot "$id" "$action")"
+      enter_test_mode "$id"
+      old_current="$(test_link_target "$state/current" 2>/dev/null || true)"
+      if [[ -n "$old_current" ]]; then
+        set_state_link "$state/previous" "$old_current"
+      else
+        rm -f -- "$state/previous"
+      fi
+      set_state_link "$state/current" "$snapshot"
+      switch_live_to_snapshot "$id" "$snapshot"
+      reload_shell
+      echo "test: mode ON for $id -> $snapshot"
+      echo "test: later edits in the source repository will not affect this snapshot"
+      ;;
+  esac
 }
 
 fetch_registry_json() {
@@ -422,11 +708,16 @@ cmd_dev() {
   local mode="${2:-}"
 
   [[ -n "$id" ]] || fail "dev requires a plugin id (e.g. fred.clock)"
+  validate_plugin_id "$id"
   [[ "$mode" == "on" || "$mode" == "off" ]] || fail "dev mode must be 'on' or 'off'"
   [[ -d "$REPO_DIR" ]] || fail "dev requires local config repository at $REPO_DIR (set FRED_CONFIG_REPO to customize)"
 
   local deployed="$PLUGINS_SRC/$id"
   local live="$LIVE_DIR/$id"
+  local test_state
+  test_state="$(test_state_dir "$id")"
+  [[ ! -f "$test_state/active" ]] ||
+    fail "$id is in snapshot test mode; run 'omarchy-fred-plugin test $id off' first"
 
   if [[ "$mode" == "on" ]]; then
     [[ -d "$deployed" ]] || fail "deployed directory not found: $deployed"
@@ -442,14 +733,23 @@ cmd_dev() {
     reload_shell
     echo "dev: mode ON for $id -> $deployed"
   else
-    # `dev off` ends in a home-manager switch, and Home Manager resolves every
-    # managed file *through* any dev symlink still present: identical files
-    # are skipped, but a file that differs from the git tree is replaced in
-    # the repo's working tree by a store link (ln -Tsf; HM 26.11 link script).
-    # So the requested link is always removed, but the switch runs only once
-    # the last dev link is gone; until then reconciliation is deferred. The
-    # plugin must be committed either way, since the deferred generation is
-    # built from the git tree and only this call checks this plugin.
+    # Guards before anything is touched. `dev off` ends in a home-manager
+    # switch, and Home Manager resolves every managed file *through* any dev
+    # symlink still present: identical files are skipped, but a file that
+    # differs from the git tree is replaced in the repo's working tree by a
+    # store link (ln -Tsf; HM 26.11 link script). So: no other override may
+    # exist, and this plugin must be committed so the generation matches.
+    local other others=()
+    for other in "$LIVE_DIR"/fred.*; do
+      [[ -L "$other" ]] || continue
+      [[ "$(basename "$other")" == "$id" ]] && continue
+      others+=("$(basename "$other") -> $(readlink "$other")")
+    done
+    if (( ${#others[@]} > 0 )); then
+      printf 'dev: refusing to switch: other plugin overrides are still active:\n' >&2
+      printf '  %s\n' "${others[@]}" >&2
+      fail "turn them off first, or a home-manager switch could overwrite files in $REPO_DIR"
+    fi
     if git -C "$REPO_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
       local dirty
       dirty="$(git -C "$REPO_DIR" status --porcelain --untracked-files=all -- "config/omarchy/plugins/$id" 2>/dev/null || true)"
@@ -466,17 +766,8 @@ cmd_dev() {
       echo "dev: $live is not a dev symlink"
     fi
 
-    local other others=()
-    for other in "$LIVE_DIR"/fred.*; do
-      [[ -L "$other" ]] || continue
-      others+=("$(basename "$other") -> $(readlink "$other")")
-    done
-    if (( ${#others[@]} > 0 )); then
-      printf 'dev: warning: other plugins are still in dev mode:\n' >&2
-      printf '  %s\n' "${others[@]}" >&2
-      printf 'dev: warning: skipping home-manager switch; %s stays undeployed until the last dev link is turned off (a switch now could overwrite their files in %s)\n' "$id" "$REPO_DIR" >&2
-    elif command -v home-manager >/dev/null 2>&1 && [[ -f "$REPO_DIR/flake.nix" ]]; then
-      echo "dev: last dev link removed; restoring Home Manager configuration..."
+    if command -v home-manager >/dev/null 2>&1 && [[ -f "$REPO_DIR/flake.nix" ]]; then
+      echo "dev: restoring Home Manager configuration..."
       home-manager switch --flake "${REPO_DIR}#fred"
     else
       echo "dev: note: run home-manager switch or recreate store symlinks if needed."
@@ -519,6 +810,10 @@ case "${1:-}" in
   dev)
     shift
     cmd_dev "$@"
+    ;;
+  test)
+    shift
+    cmd_test "$@"
     ;;
   -v|--version)
     echo "omarchy-fred-plugin v${VERSION}"

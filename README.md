@@ -117,7 +117,46 @@ omarchy-fred-plugin search monitor
 
 ## Developer Workflow (Dual-Artifact Mode)
 
-For local development against an `omarchy-config` dotfiles repository:
+### Manual development in the published repository
+
+`test` deploys an immutable snapshot from
+`~/Code/omarchy-fred-<name>`. Editing the repository afterward does not
+change the running plugin until `test` is run again.
+
+```bash
+cd ~/Code/omarchy-fred-agents
+git switch -c manual/my-change
+
+# Edit, inspect, and validate without affecting the running system.
+$EDITOR Main.qml
+git diff
+git diff --check
+omarchy plugin validate .
+
+# Snapshot the current working tree and test it locally.
+omarchy-fred-plugin test fred.agents
+omarchy-fred-plugin test fred.agents status
+
+# After more edits, deploy a new snapshot. Undo toggles between the two most
+# recently tested snapshots; off restores the exact pre-test installation.
+omarchy-fred-plugin test fred.agents
+omarchy-fred-plugin test fred.agents undo
+omarchy-fred-plugin test fred.agents off
+
+# A Git ref can be tested independently of uncommitted working-tree changes.
+omarchy-fred-plugin test fred.agents HEAD~1
+```
+
+Snapshots and their metadata live under
+`${XDG_STATE_HOME:-~/.local/state}/omarchy-fred-plugin/test/<id>/`. The
+original live plugin directory is moved there while test mode is active and
+restored by `test <id> off`. Test mode refuses to replace an existing dev
+symlink, and dev mode refuses to replace an active test snapshot.
+
+### Fast editing in the deployed configuration
+
+For the established development workflow against an `omarchy-config`
+dotfiles repository:
 
 ```bash
 # Toggle fast QML development symlink override (bypasses read-only store symlinks)
@@ -131,13 +170,10 @@ omarchy-fred-plugin dev fred.clock on
 # shell; after a plain home-manager switch do the same by hand:
 omarchy-fred-plugin dev fred.clock off   # or: omarchy-restart-shell after purging
 
-# Restore Home Manager store links when done. This removes the plugin's dev
-# link, then runs a home-manager switch only if it was the last fred.* dev
-# link; while others remain the switch is skipped with a warning and the
-# plugin stays undeployed until the last one is turned off (Home Manager
-# resolves files through a remaining dev link and would overwrite a differing
-# file in the repo with a store link). It refuses while the plugin has
-# uncommitted changes (the generation is built from the git tree).
+# Restore Home Manager store links when done. This refuses to switch while
+# another plugin override remains, because Home Manager could otherwise
+# replace differing files through that symlink. It also refuses while this
+# plugin has uncommitted deployed-copy changes.
 omarchy-fred-plugin dev fred.clock off
 
 # Diff local deployed config against public published repo
