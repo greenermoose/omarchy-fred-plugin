@@ -6,13 +6,13 @@ This repository, like all components in the `omarchy-fred-*` suite, practices tr
 
 ## 1. Fred's Multi-Agent AI Toolchain
 
-Rather than relying on a single AI model or interface, Fred uses a specialized toolchain tailored to each tool's strengths. CLI versions below were captured on 2026-09-13 (`<tool> --version`).
+Rather than relying on a single AI model or interface, Fred uses a specialized toolchain tailored to each tool's strengths. CLI versions below were captured on 2026-09-22 (`<tool> --version`).
 
 | Tool & Interface | CLI Version | Backing Models | Primary Role in the Ecosystem |
 | :-- | :-- | :-- | :-- |
-| **Claude Code** (`claude`) | `2.1.267` | Claude Opus 5 (`claude-opus-5`) | **Architecture & System Planning**: Authoring durable system specifications, multi-step runbooks, and cross-cutting policies. |
+| **Claude Code** (`claude`) | `2.1.278` | Claude Opus 5 (`claude-opus-5`) | **Architecture & System Planning**: Authoring durable system specifications, multi-step runbooks, and cross-cutting policies. |
 | **Codex CLI** (`codex`) | `0.155.1` | `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra` | **Architecture & System Planning**: Second opinion on plans and specifications alongside Claude. |
-| **Antigravity CLI** (`agy`) | `1.2.2` – `1.2.6` | Gemini 3.8 Flash (High) | **Coding, Refactoring & Implementation**: Primary coding partner for multi-file pair-programming, security remediation, bash/Python/QML engineering, and git release workflow. |
+| **Antigravity CLI** (`agy`) | `1.2.2` – `1.2.8` | Gemini 3.8 Flash (High) | **Coding, Refactoring & Implementation**: Primary coding partner for multi-file pair-programming, security remediation, bash/Python/QML engineering, and git release workflow. |
 | **OpenCode** (`opencode`) | `1.18.31` | Big Pickle | **Distro & System Q&A**: Efficient lookups for Arch Linux / Omarchy package specifics and shell configuration, conserving frontier-model token budgets. |
 | **Grok CLI** (`grok`) | `1.0.25` (`f7e67d6988e2`, stable) | Grok 4.6 | **Workstation Support**: Additional debugging, hardware diagnostics, and alternative implementation analysis. |
 
@@ -55,5 +55,6 @@ Every repository in the `omarchy-fred-*` suite implements:
 | [**2026-09-20**](docs/ai/2026-09-20-publish-fred-keyboard-v0.2.2.md) | Publish fred.keyboard v0.2.2 (pre-release) | `claude` (Claude Code `2.1.278`) | Claude Opus 5 (`claude-opus-5`) | Synced 0.2.2 (capture mode, binding overlay from `hyprctl binds`, mouse capture, cross-monitor panel, orphan list) to the public repo; updated the suite README row, CLI example and showcase card badge/description. Screenshot refresh pending Fred. Same day: released v1.0.0 (tag, GitHub Release at `95e43dc7`), suite row and showcase updated with the real screenshot. |
 | [**2026-09-20**](docs/ai/2026-09-20-add-fred-agents-to-suite.md) | Add fred.agents to the suite (pre-release prep) | `opencode` (OpenCode `1.18.31`) | Big Pickle (`big-pickle`) | Registered `fred.agents` v1.0.0 in both CLI catalog copies (`omarchy-fred-agents.git`), added the README suite row and example output, and added the showcase card with a placeholder preview. Push pending Fred. |
 | [**2026-09-22**](docs/ai/2026-09-22-snapshot-testing-and-human-authorship.md) | Immutable Plugin Test Snapshots & Human Authorship | `codex` (Codex CLI `0.155.1`) | GPT-5.6 Sol (`gpt-5.6-sol`) | Added working-tree/Git-ref snapshot deployment with undo and exact restoration; taught provenance and publish guidance to preserve human-only code authorship while separately disclosing later AI assistance. |
+| [**2026-09-22**](docs/ai/2026-09-22-plugin-status-audit-and-doc-corrections.md) | Plugin Status Audit & Documentation Corrections | `claude` (Claude Code `2.1.278`) | Claude Opus 5 (`claude-opus-5`) | Audited all eight `fred.*` plugins against manifests, tags, releases, and the live marketplace registry; corrected stale versions and marketplace status across the suite catalog, README, and showcase; marked the unpublished `fred.agents` as Coming soon and guarded `install` against it; removed `fred.launch` from the plugin catalog as it is a menu route, not a plugin. |
 
 Detailed prompts and decisions are recorded in individual session logs under [`docs/ai/`](docs/ai/).

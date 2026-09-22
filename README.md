@@ -11,7 +11,7 @@ Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 | :-- | :-- |
 | **Showcase Website** | **[greenermoose.github.io/omarchy-fred-plugin](https://greenermoose.github.io/omarchy-fred-plugin/)** |
 | **Tool** | `omarchy-fred-plugin` |
-| **Version** | `1.0.1` |
+| **Version** | `1.1.1` |
 | **License** | GPL-3.0-or-later |
 | **Authors** | Fred (@greenermoose), Gemini 3.8 Flash, Codex (gpt-5.6-sol), Claude Opus 5 |
 | **Platform** | Omarchy Linux (Arch Linux base, Hyprland, Quickshell) |
@@ -26,14 +26,18 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 
 | ID | Latest Version | Description | Marketplace Status |
 | :-- | :-- | :-- | :-- |
-| `fred.workspaces` | `v1.5.1` | Workspace numbers with clickable desktop modes (Mac, Windows, Stock), dynamic Windows sets, and unused monitor idle blanking | **Verified** (Outcome: Passed) |
-| `fred.clock` | `v1.3.3` | Next-event countdown badge, multi-feed iCal sync, interactive agenda, and local event management | **Verified** (Outcome: Passed) |
-| `fred.sysinfo` | `v1.1.2` | Universal hardware telemetry with a fresh CPU, available RAM, and free-disk hover summary | Available (In testing) |
-| `fred.monitor` | `v1.0.0` | Display management panel with per-display link retrain / Reset, position labels, and stock monitor fallback | Available (Milestone B complete) |
-| `fred.weather` | `v1.0.3` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Available (Ready for submission) |
-| `fred.tides` | `v1.0.3` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Available (Submission #7664) |
-| `fred.keyboard` | `v1.0.0` | Keyboard shortcut visualizer: your actual keyboard, bound keys tinted, capture mode that tells you what any key combination or mouse action runs, and search from a command to its keys | Released; marketplace submission #7860 validated, awaiting listing review |
-| `fred.agents` | `v1.0.0` | AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor prompt/token activity at a glance | Available (In testing) |
+| `fred.workspaces` | `v1.5.1` | Workspace numbers with clickable desktop modes (Mac, Windows, Stock), dynamic Windows sets, and unused monitor idle blanking | **Listed** (security baseline passed) |
+| `fred.clock` | `v1.3.3` | Next-event countdown badge, multi-feed iCal sync, interactive agenda, and local event management | **Listed** (security baseline passed) |
+| `fred.keyboard` | `v1.0.0` | Keyboard shortcut visualizer: your actual keyboard, bound keys tinted, capture mode that tells you what any key combination or mouse action runs, and search from a command to its keys | **Listed** (security baseline passed) |
+| `fred.sysinfo` | `v1.1.1` | Universal hardware telemetry with a fresh CPU, available RAM, and free-disk hover summary | Submitted, under review |
+| `fred.tides` | `v1.0.3` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Submitted, under review |
+| `fred.weather` | `v1.0.2` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Not submitted |
+| `fred.monitor` | `v1.0.0` | Display management panel with per-display link retrain / Reset, position labels, and stock monitor fallback | Not submitted |
+| `fred.agents` | — | AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor prompt/token activity at a glance | **Coming soon** — not published yet |
+
+"Latest Version" is the newest GitHub release. `fred.agents` has no public repository yet, so it appears in the catalog and in `search` but cannot be installed.
+
+Plugin status last verified 2026-09-22 against each repository's releases and the marketplace `registry.json`. Run `omarchy-fred-plugin list --all --refresh` for live status.
 
 ---
 
@@ -71,13 +75,13 @@ omarchy-fred-plugin list --refresh
 Example output:
 ```text
 ID                 INSTALLED  STATE      MARKETPLACE            LATEST GITHUB / LOCAL
-fred.agents        1.0.0      enabled    Not Listed             v1.0.0
+fred.agents        1.1.2      enabled    Coming soon            unpublished
 fred.clock         1.3.3      enabled    Verified               v1.3.3
-fred.keyboard      1.0.0      enabled    Not Listed             v1.0.0
-fred.monitor       1.0.0      enabled    Not Listed             v1.0.0
-fred.sysinfo       1.1.2      enabled    Not Listed             v1.1.2
+fred.keyboard      1.0.0      enabled    Verified               v1.0.0
+fred.monitor       1.2.3      enabled    Not Listed             v1.0.0
+fred.sysinfo       1.1.2      enabled    Not Listed             v1.1.1
 fred.tides         1.0.3      enabled    Not Listed             v1.0.3
-fred.weather       1.0.3      enabled    Not Listed             1.0.3
+fred.weather       1.0.4      enabled    Not Listed             v1.0.3
 fred.workspaces    1.5.1      enabled    Verified               v1.5.1
 ```
 

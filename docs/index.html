@@ -168,6 +168,13 @@
     .card.clickable {
       cursor: pointer;
     }
+    .card .note {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      font-size: 0.875rem;
+      color: #94a3b8;
+      border-top: 1px solid var(--card-border);
+    }
     .card.clickable:hover {
       transform: translateY(-2px);
       border-color: var(--accent);
@@ -476,7 +483,7 @@
             </svg>
             <span>GitHub: greenermoose/omarchy-fred-plugin</span>
           </a>
-          <a href="https://github.com/greenermoose/omarchy-fred-plugin/releases" class="badge badge-gray" target="_blank" rel="noopener noreferrer">v1.0.3</a>
+          <a href="https://github.com/greenermoose/omarchy-fred-plugin/releases" class="badge badge-gray" target="_blank" rel="noopener noreferrer">v1.1.1</a>
         </div>
       </div>
       <h1>Fred's Omarchy Plugin Suite</h1>
@@ -563,10 +570,10 @@
           <div class="card-header">
             <h3>fred.sysinfo</h3>
             <div class="badge-group">
-              <span class="badge badge-gray">v1.1.2</span>
+              <span class="badge badge-gray">v1.1.1</span>
             </div>
           </div>
-          <div class="card-preview" onclick="openLightbox('assets/sysinfo-screenshot.png', 'fred.sysinfo (v1.1.2) — Fresh CPU, RAM &amp; Disk Hover Summary', event)">
+          <div class="card-preview" onclick="openLightbox('assets/sysinfo-screenshot.png', 'fred.sysinfo (v1.1.1) — Fresh CPU, RAM &amp; Disk Hover Summary', event)">
             <img src="assets/sysinfo-screenshot.png" alt="fred.sysinfo resource summary hover" loading="lazy">
             <span class="zoom-hint">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
@@ -592,10 +599,10 @@
           <div class="card-header">
             <h3>fred.weather</h3>
             <div class="badge-group">
-              <span class="badge badge-gray">v1.0.3</span>
+              <span class="badge badge-gray">v1.0.2</span>
             </div>
           </div>
-          <div class="card-preview" onclick="openLightbox('assets/weather-screenshot.png', 'fred.weather (v1.0.3) — 10-Day Outlook &amp; 48-Hour Hourly Timeline', event)">
+          <div class="card-preview" onclick="openLightbox('assets/weather-screenshot.png', 'fred.weather (v1.0.2) — 10-Day Outlook &amp; 48-Hour Hourly Timeline', event)">
             <img src="assets/weather-screenshot.png" alt="fred.weather screenshot" loading="lazy">
             <span class="zoom-hint">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
@@ -617,11 +624,11 @@
           </div>
         </div>
 
-        <div class="card clickable" data-href="https://github.com/greenermoose/omarchy-fred-agents">
+        <div class="card">
           <div class="card-header">
             <h3>fred.agents</h3>
             <div class="badge-group">
-              <span class="badge badge-gray">v1.0.0</span>
+              <span class="badge badge-amber">Coming soon</span>
             </div>
           </div>
           <div class="card-preview placeholder">
@@ -629,18 +636,7 @@
             <span>Screenshot pending</span>
           </div>
           <p>AI agent usage on the bar: Antigravity, Claude, Codex, and Cursor in one panel. Token agents (Claude, Codex) show the usual per-day token chart and per-model breakdown; agents that expose no local token ledger (Cursor, Antigravity) render PROMPTS BY DAY with raw counts, "N prompts · M sessions" tooltips, and no token-by-model section. The panel swaps totals, day rows, and tooltips between the two modes automatically per agent.</p>
-          <div class="code-block">
-            <code>omarchy plugin add https://github.com/greenermoose/omarchy-fred-agents.git --enable</code>
-            <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/omarchy-fred-agents.git --enable')">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
-                <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="button-group">
-            <a href="https://github.com/greenermoose/omarchy-fred-agents" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
-          </div>
+          <p class="note">Not published yet. There is no public repository or install command for <code>fred.agents</code> so far; it runs on Fred's workstation while it is finished. This card will gain a repository link and an install command when it ships.</p>
         </div>
 
         <div class="card clickable" data-href="https://github.com/greenermoose/omarchy-fred-keyboard">
@@ -648,6 +644,7 @@
             <h3>fred.keyboard</h3>
             <div class="badge-group">
               <span class="badge badge-gray">v1.0.0</span>
+              <span class="badge badge-green">Verified</span>
             </div>
           </div>
           <div class="card-preview" onclick="openLightbox('assets/keyboard-screenshot.png', 'fred.keyboard (v1.0.0) &mdash; Your Actual Keyboard, Bound Keys Tinted', event)">
@@ -668,6 +665,7 @@
             </button>
           </div>
           <div class="button-group">
+            <a href="https://omarchyplugins.com/plugin.html?id=fred.keyboard" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Marketplace</a>
             <a href="https://github.com/greenermoose/omarchy-fred-keyboard" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
           </div>
         </div>
