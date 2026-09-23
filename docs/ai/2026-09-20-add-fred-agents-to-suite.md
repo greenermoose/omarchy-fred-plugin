@@ -18,8 +18,8 @@ choice; pushes intentionally omitted for review.)
 ## Changes
 
 - Registered `fred.agents` in the CLI catalog (`CATALOG_REPOS` and
-  `CATALOG_DESC`) in **both** copies of `bin/omarchy-fred-plugin`
-  (`omarchy-fred-plugin` and `omarchy-fred-config`), pointing at
+  `CATALOG_DESC`) in **both** copies of the CLI (`plugin-fred-tamlinux` and
+  the workstation-deployed copy), pointing at
   `greenermoose/omarchy-fred-agents`. The PATH copy (Home Manager Nix-store
   build) will pick the entry up on the next rebuild.
 - Added the `fred.agents` `v1.0.0` row to the suite README's `Available

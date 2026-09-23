@@ -11,7 +11,7 @@ export HOME="$TEST_DIR/home"
 export FRED_LIVE_DIR="$HOME/.config/omarchy/plugins"
 export FRED_TEST_ROOT="$HOME/.local/state/tam-plugin/test"
 export FRED_PUBLISHED_ROOT="$HOME/Code"
-export FRED_CONFIG_REPO="$HOME/Code/tamlinux/config-fred-tamlinux"
+export FRED_CONFIG_REPO="$HOME/Code/tamlinux/local-config"
 
 mkdir -p "$HOME/bin" "$FRED_LIVE_DIR/fred.demo" \
   "$FRED_PUBLISHED_ROOT/demo-fred-tamlinux" \

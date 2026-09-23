@@ -159,14 +159,14 @@ symlink, and dev mode refuses to replace an active test snapshot.
 
 ### Fast editing in the deployed configuration
 
-For the established development workflow against the
-`config-fred-tamlinux` checkout:
+For the established development workflow against a local workstation
+config checkout:
 
 ```bash
 # Toggle fast QML development symlink override (bypasses read-only store symlinks)
 tam-plugin dev fred.clock on
 
-# Edit QML files in ~/Code/tamlinux/config-fred-tamlinux/config/omarchy/plugins/fred.clock/...
+# Edit QML files in $FRED_CONFIG_REPO/config/omarchy/plugins/fred.clock/...
 # manifest.json edits are picked up live; QML/JS edits are not: Quickshell 0.3.1
 # cannot clear its in-memory component cache, and Qt's on-disk qmlcache trusts
 # the source mtime (a constant 1970 for Nix store files). `dev on|off` and

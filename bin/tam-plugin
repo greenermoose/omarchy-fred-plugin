@@ -15,9 +15,34 @@ TEST_ROOT="${FRED_TEST_ROOT:-${XDG_STATE_HOME:-${HOME}/.local/state}/tam-plugin/
 PUBLISHED_ROOT="${FRED_PUBLISHED_ROOT:-${HOME}/Code/tamlinux}"
 MARKETPLACE_REGISTRY_URL="https://raw.githubusercontent.com/omacom/omarchy-plugin-marketplace/main/registry.json"
 
-# Auto-detect local development config repository if present
-REPO_DIR="${FRED_CONFIG_REPO:-${HOME}/Code/tamlinux/config-fred-tamlinux}"
-PLUGINS_SRC="${REPO_DIR}/config/omarchy/plugins"
+# Resolve the local workstation config checkout without naming a private repo.
+# 1. FRED_CONFIG_REPO if set
+# 2. Else the single $HOME/Code/tamlinux/*/ directory that contains config/omarchy/plugins
+# 3. Else empty; diff/dev fail and ask for FRED_CONFIG_REPO
+resolve_config_repo() {
+  if [[ -n "${FRED_CONFIG_REPO:-}" ]]; then
+    printf '%s\n' "$FRED_CONFIG_REPO"
+    return 0
+  fi
+  local root="${HOME}/Code/tamlinux"
+  local matches=()
+  local d
+  [[ -d "$root" ]] || return 0
+  for d in "$root"/*/; do
+    [[ -d "${d}config/omarchy/plugins" ]] || continue
+    matches+=("${d%/}")
+  done
+  if [[ ${#matches[@]} -eq 1 ]]; then
+    printf '%s\n' "${matches[0]}"
+  fi
+}
+
+REPO_DIR="$(resolve_config_repo)"
+if [[ -n "$REPO_DIR" ]]; then
+  PLUGINS_SRC="${REPO_DIR}/config/omarchy/plugins"
+else
+  PLUGINS_SRC=""
+fi
 
 # Known Fred plugins catalog
 declare -A CATALOG_REPOS=(
@@ -118,7 +143,7 @@ Subcommands:
   remove <id>       Remove an installed plugin via omarchy plugin remove
   search [query]    Search available plugins in Fred's catalog
   diff <id>         [Developer] Diff deployed plugin against local published repo
-  dev <id> on|off   [Developer] Toggle fast QML symlink override to config-fred-tamlinux
+  dev <id> on|off   [Developer] Toggle fast QML symlink override to the local workstation config checkout
   test <id> [...]   [Developer] Test immutable snapshots from the published repo
   upstream-diff     [Developer] Compare clonedFrom stamps against installed Omarchy
 USAGE
@@ -721,7 +746,7 @@ cmd_update() {
 cmd_diff() {
   local id="${1:-}"
   [[ -n "$id" ]] || fail "diff requires a plugin id (e.g. fred.clock)"
-  [[ -d "$REPO_DIR" ]] || fail "diff requires local config repository at $REPO_DIR (set FRED_CONFIG_REPO to customize)"
+  [[ -n "$REPO_DIR" && -d "$REPO_DIR" ]] || fail "diff requires a local workstation config checkout (set FRED_CONFIG_REPO)"
 
   local suffix="${id#fred.}"
   local deployed="$PLUGINS_SRC/$id"
@@ -746,7 +771,7 @@ cmd_dev() {
   [[ -n "$id" ]] || fail "dev requires a plugin id (e.g. fred.clock)"
   validate_plugin_id "$id"
   [[ "$mode" == "on" || "$mode" == "off" ]] || fail "dev mode must be 'on' or 'off'"
-  [[ -d "$REPO_DIR" ]] || fail "dev requires local config repository at $REPO_DIR (set FRED_CONFIG_REPO to customize)"
+  [[ -n "$REPO_DIR" && -d "$REPO_DIR" ]] || fail "dev requires a local workstation config checkout (set FRED_CONFIG_REPO)"
 
   local deployed="$PLUGINS_SRC/$id"
   local live="$LIVE_DIR/$id"

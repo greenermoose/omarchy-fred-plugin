@@ -7,7 +7,7 @@
 
 ## Prompts
 
-> In writing some improvements for the repo in ~/Code/omarchy-fred-improvements, we noticed that the docs for this system are incomplete and incorrect. Please evaluate the status of all fred.* plugins, check for documentation about them that is incorrect or misleading, and correct. Ask if you have questions.
+> In writing some improvements for the private priorities backlog, we noticed that the docs for this system are incomplete and incorrect. Please evaluate the status of all fred.* plugins, check for documentation about them that is incorrect or misleading, and correct. Ask if you have questions.
 
 Fred then chose, in answer to three questions: keep `fred.agents` in the catalog
 but mark it "Coming soon"; move `fred.launch` out of the plugin catalog

@@ -3,7 +3,7 @@
 - **Date**: 2026-09-19
 - **Tool**: `claude` (Claude Code `2.1.278`)
 - **Model**: `claude-opus-5` (Claude Opus 5)
-- **Scope**: `omarchy-fred-plugin` (CLI catalog, README table, showcase website), `omarchy-fred-keyboard` (new repository), `omarchy-fred-config` (deployment, suite plan)
+- **Scope**: `plugin-fred-tamlinux` (CLI catalog, README table, showcase website), `keyboard-fred-tamlinux` (new repository), local workstation config (deployment, suite plan)
 
 ## Summary of Changes
 
@@ -14,8 +14,8 @@
    - Added `fred.keyboard` to `CATALOG_REPOS` mapping to
      `https://github.com/greenermoose/omarchy-fred-keyboard.git`.
    - Added `fred.keyboard` to `CATALOG_DESC`.
-   - Applied to both catalog copies (`omarchy-fred-plugin/bin/` and
-     `omarchy-fred-config/bin/`), which must stay identical.
+   - Applied to both catalog copies (`plugin-fred-tamlinux/bin/` and
+     the workstation-deployed `bin/`), which must stay identical.
 
 3. **README Documentation**: added the `fred.keyboard` row to the
    `Available Plugins in the Suite` table (`v0.1.0`,

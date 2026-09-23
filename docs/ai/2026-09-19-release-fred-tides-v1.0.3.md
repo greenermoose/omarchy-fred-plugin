@@ -3,7 +3,7 @@
 - **Date**: 2026-09-19
 - **Tool**: `agy` (Antigravity CLI `1.2.6`)
 - **Model**: `Gemini 3.8 Flash (High)`
-- **Scope**: `omarchy-fred-tides`, `omarchy-fred-config`, `omarchy-fred-plugin`
+- **Scope**: `tides-fred-tamlinux`, local workstation config, `plugin-fred-tamlinux`
 
 ## Summary of Changes
 
@@ -15,7 +15,7 @@
    - Created permanent Omarchy Show & Tell discussion [#12528](https://github.com/omacom/omarchy/discussions/12528).
    - Submitted official marketplace listing issue [#7664](https://github.com/omacom/omarchy-plugin-marketplace/issues/7664); automated validation passed Quattro compatibility and security baseline.
 
-2. **Local Workstation Sync (`omarchy-fred-config`)**:
+2. **Local Workstation Sync:**
    - Synced published tree to deployed plugin directory (`config/omarchy/plugins/fred.tides/`).
    - Added `"fred.tides": "1.0.3"` to `system/bom.json`.
    - Purged compiled QML cache (`omarchy-qmlcache-purge`) and restarted desktop shell (`omarchy-restart-shell`).

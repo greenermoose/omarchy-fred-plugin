@@ -14,7 +14,7 @@ Fred later chose daily `tam-*` command names, optional long aliases matching the
 ## Key Decisions & Implementation Notes
 
 - Daily command is `tam-plugin`; long alias is `plugin-fred-tamlinux`.
-- Defaults: `REPO_DIR=~/Code/tamlinux/config-fred-tamlinux`, `PUBLISHED_ROOT=~/Code/tamlinux`.
+- Defaults: `REPO_DIR` from `FRED_CONFIG_REPO` (local workstation config checkout), `PUBLISHED_ROOT=~/Code/tamlinux`.
 - `published_dir()` is `$PUBLISHED_ROOT/${id#fred.}-fred-tamlinux` (no `fred.agents` special case).
 - State/cache: `${XDG_STATE_HOME:-~/.local/state}/tam-plugin` and `~/.cache/tam-plugin`.
 - `fred-plugin-upstream-diff` folded into `tam-plugin upstream-diff`.
