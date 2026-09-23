@@ -1,6 +1,6 @@
 # Manage Fred's Tamlinux plugins (tam-plugin)
 
-Discover, install, verify, and manage Fred's Tamlinux shell plugins (`fred.*`).
+Discover, install, verify, and manage Fred's [Tamlinux](https://github.com/greenermoose/tamlinux) shell plugins (`fred.*`).
 
 > ### [Fred's Tamlinux Plugin Showcase](https://greenermoose.github.io/plugin-fred-tamlinux/)
 > **[https://greenermoose.github.io/plugin-fred-tamlinux/](https://greenermoose.github.io/plugin-fred-tamlinux/)**
