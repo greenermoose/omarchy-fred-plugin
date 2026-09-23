@@ -62,5 +62,6 @@ The [2026-09-22 repository rename session](docs/ai/2026-09-22-github-repository-
 | [**2026-09-22**](docs/ai/2026-09-22-release-tides-sysinfo.md) | Release fred.tides v1.0.4 and fred.sysinfo v1.1.2 | Cursor `3.21.16` (`composer`) | composer | Suite README and showcase badges updated after the SOP 3 releases and marketplace resubmissions. |
 | [**2026-09-22**](docs/ai/2026-09-22-tam-plugin-rename.md) | Rename CLI to tam-plugin | Cursor `3.21.16` (`composer`) | composer | Daily command is `tam-plugin`; defaults look under `~/Code/tamlinux`. |
 | [**2026-09-22**](docs/ai/2026-09-22-tamlinux-branding.md) | Rebrand the suite to Tamlinux | Cursor `3.21.16` (`composer`) | composer | Showcase and CLI help say Fred's Tamlinux Plugin Suite; leftover `omarchy-fred-plugin` installer URL and CLI examples on the Pages site point at `tam-plugin`. |
+| [**2026-09-23**](docs/ai/2026-09-23-plugin-releases.md) | Complete the Stage 1 plugin releases | Codex CLI `0.155.1` | `gpt-6-sol` | Synced the suite catalog and showcase with the published workspaces 1.5.2, agents 1.1.2, weather 1.0.4, and monitor 1.2.3 GitHub Releases; marked the newer workspaces marketplace update as unverified. |
 
 Detailed prompts and decisions are recorded in individual session logs under [`docs/ai/`](docs/ai/).
