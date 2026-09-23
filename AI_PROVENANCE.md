@@ -1,6 +1,6 @@
 # AI Collaboration & Provenance
 
-This repository, like all components in the `omarchy-fred-*` suite, practices transparent AI-assisted engineering. We openly document the AI tools, models, prompts, and architectural decisions used in pair-programming this software.
+This repository, like all components in the `*-fred-tamlinux` suite, practices transparent AI-assisted engineering. We openly document the AI tools, models, prompts, and architectural decisions used in pair-programming this software.
 
 ---
 
@@ -18,9 +18,9 @@ Rather than relying on a single AI model or interface, Fred uses a specialized t
 
 ---
 
-## 2. Provenance Standards Across `omarchy-fred-*`
+## 2. Provenance Standards Across `*-fred-tamlinux`
 
-Every repository in the `omarchy-fred-*` suite implements:
+Every repository in the `*-fred-tamlinux` suite implements:
 1. **Curated Session Logs**: Chronological prompt and implementation records stored as individual per-session documents in [`docs/ai/`](docs/ai/).
 2. **Git Commit Trailers**:
    ```git

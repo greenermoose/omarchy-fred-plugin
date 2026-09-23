@@ -1,6 +1,6 @@
-# AI Collaboration Session Archive: `omarchy-fred-plugin`
+# AI Collaboration Session Archive: `plugin-fred-tamlinux`
 
-This directory contains individual session records documenting prompt history, tools, models, and key architectural decisions for `omarchy-fred-plugin`.
+This directory contains individual session records documenting prompt history, tools, models, and key architectural decisions for `plugin-fred-tamlinux`.
 
 ## Session Records
 
