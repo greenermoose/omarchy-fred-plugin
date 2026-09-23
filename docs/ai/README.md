@@ -24,3 +24,4 @@ This directory contains individual session records documenting prompt history, t
 | 2026-09-22 | Immutable plugin test snapshots and human-authorship publishing rules | `codex` (Codex CLI `0.155.1`) | GPT-5.6 Sol (`gpt-5.6-sol`) | [`2026-09-22-snapshot-testing-and-human-authorship.md`](2026-09-22-snapshot-testing-and-human-authorship.md) |
 | 2026-09-22 | Release fred.tides v1.0.4 and fred.sysinfo v1.1.2 | Cursor `3.21.16` | composer | [`2026-09-22-release-tides-sysinfo.md`](2026-09-22-release-tides-sysinfo.md) |
 | 2026-09-22 | Rename CLI to tam-plugin and look under ~/Code/tamlinux | Cursor `3.21.16` | composer | [`2026-09-22-tam-plugin-rename.md`](2026-09-22-tam-plugin-rename.md) |
+| 2026-09-22 | Rebrand the suite to Tamlinux | Cursor `3.21.16` | composer | [`2026-09-22-tamlinux-branding.md`](2026-09-22-tamlinux-branding.md) |

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# tam-plugin — Discover, install, and manage Fred's Omarchy shell plugins (fred.*)
+# tam-plugin — Discover, install, and manage Fred's Tamlinux shell plugins (fred.*)
 #
-# Part of the Omarchy Fred Plugin Suite (https://github.com/greenermoose/plugin-fred-tamlinux)
+# Part of the Tamlinux Plugin Suite (https://github.com/greenermoose/plugin-fred-tamlinux)
 # License: GPL-3.0-or-later
 
 set -euo pipefail
@@ -94,7 +94,7 @@ reload_shell() {
 
 usage() {
   cat <<USAGE
-tam-plugin v${VERSION} — Discover, install, and manage Fred's Omarchy shell plugins
+tam-plugin v${VERSION} — Discover, install, and manage Fred's Tamlinux shell plugins
 
 Usage:
   tam-plugin list [--all] [--refresh]
@@ -592,7 +592,7 @@ cmd_info() {
   [[ -n "$id" ]] || fail "info requires a plugin id (e.g. fred.clock)"
 
   local repo_url="${CATALOG_REPOS[$id]:-https://github.com/greenermoose/omarchy-$id.git}"
-  local desc="${CATALOG_DESC[$id]:-Personal Omarchy shell plugin}"
+  local desc="${CATALOG_DESC[$id]:-Personal Tamlinux shell plugin}"
 
   echo "Plugin:      $id"
   echo "Description: $desc"

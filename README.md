@@ -1,11 +1,11 @@
-# Manage Fred's omarchy plugins (tam-plugin)
+# Manage Fred's Tamlinux plugins (tam-plugin)
 
-Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
+Discover, install, verify, and manage Fred's Tamlinux shell plugins (`fred.*`).
 
-> ### [Fred's Omarchy Plugin Showcase](https://greenermoose.github.io/plugin-fred-tamlinux/)
+> ### [Fred's Tamlinux Plugin Showcase](https://greenermoose.github.io/plugin-fred-tamlinux/)
 > **[https://greenermoose.github.io/plugin-fred-tamlinux/](https://greenermoose.github.io/plugin-fred-tamlinux/)**
 >
-> See the full gallery of Fred's omarchy plugins.
+> See the full gallery of Fred's Tamlinux plugins.
 
 | Property | Value |
 | :-- | :-- |
@@ -14,13 +14,13 @@ Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 | **Version** | `1.1.1` |
 | **License** | GPL-3.0-or-later |
 | **Authors** | Fred (@greenermoose), Gemini 3.8 Flash, Codex (gpt-5.6-sol), Claude Opus 5 |
-| **Platform** | Omarchy Linux (Arch Linux base, Hyprland, Quickshell) |
+| **Platform** | Tamlinux (Hyprland, Quickshell) |
 
 ---
 
 ## Overview
 
-The `tam-plugin` CLI provides a unified interface to discover, install, update, and manage plugins in the `fred.*` Omarchy shell suite. It connects directly with the official [Omarchy Plugin Marketplace](https://github.com/omacom/omarchy-plugin-marketplace) registry to verify security audit status while providing instant access to bleeding-edge releases.
+The `tam-plugin` CLI provides a unified interface to discover, install, update, and manage plugins in the `fred.*` Tamlinux shell suite. It connects directly with the official [Omarchy Plugin Marketplace](https://github.com/omacom/omarchy-plugin-marketplace) registry to verify security audit status while providing instant access to bleeding-edge releases.
 
 ### Available Plugins in the Suite
 

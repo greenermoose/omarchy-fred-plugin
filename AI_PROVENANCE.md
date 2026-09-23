@@ -61,5 +61,6 @@ The [2026-09-22 repository rename session](docs/ai/2026-09-22-github-repository-
 | [**2026-09-22**](docs/ai/2026-09-22-publish-fred-agents.md) | Publish fred.agents v1.1.2 pre-release | `codex` (Codex CLI `0.155.1`) | GPT-6 Sol (`gpt-6-sol`) | Renamed the public repository to `agents-fred-tamlinux`, enabled catalog installation, updated local checkout routing and the showcase card, and published `main` without a release or marketplace submission. |
 | [**2026-09-22**](docs/ai/2026-09-22-release-tides-sysinfo.md) | Release fred.tides v1.0.4 and fred.sysinfo v1.1.2 | Cursor `3.21.16` (`composer`) | composer | Suite README and showcase badges updated after the SOP 3 releases and marketplace resubmissions. |
 | [**2026-09-22**](docs/ai/2026-09-22-tam-plugin-rename.md) | Rename CLI to tam-plugin | Cursor `3.21.16` (`composer`) | composer | Daily command is `tam-plugin`; defaults look under `~/Code/tamlinux`. |
+| [**2026-09-22**](docs/ai/2026-09-22-tamlinux-branding.md) | Rebrand the suite to Tamlinux | Cursor `3.21.16` (`composer`) | composer | Showcase and CLI help say Fred's Tamlinux Plugin Suite; leftover `omarchy-fred-plugin` installer URL and CLI examples on the Pages site point at `tam-plugin`. |
 
 Detailed prompts and decisions are recorded in individual session logs under [`docs/ai/`](docs/ai/).
