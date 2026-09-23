@@ -3,18 +3,18 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CLI="$ROOT_DIR/bin/omarchy-fred-plugin"
+CLI="$ROOT_DIR/bin/tam-plugin"
 TEST_DIR="$(mktemp -d)"
 trap 'rm -rf -- "$TEST_DIR"' EXIT
 
 export HOME="$TEST_DIR/home"
 export FRED_LIVE_DIR="$HOME/.config/omarchy/plugins"
-export FRED_TEST_ROOT="$HOME/.local/state/omarchy-fred-plugin/test"
+export FRED_TEST_ROOT="$HOME/.local/state/tam-plugin/test"
 export FRED_PUBLISHED_ROOT="$HOME/Code"
-export FRED_CONFIG_REPO="$HOME/Code/omarchy-fred-config"
+export FRED_CONFIG_REPO="$HOME/Code/tamlinux/config-fred-tamlinux"
 
 mkdir -p "$HOME/bin" "$FRED_LIVE_DIR/fred.demo" \
-  "$FRED_PUBLISHED_ROOT/omarchy-fred-demo" \
+  "$FRED_PUBLISHED_ROOT/demo-fred-tamlinux" \
   "$FRED_CONFIG_REPO/config/omarchy/plugins/fred.demo"
 printf 'managed-version\n' > "$FRED_LIVE_DIR/fred.demo/value.txt"
 
@@ -35,7 +35,7 @@ EOF
 chmod +x "$HOME/bin/omarchy" "$HOME/bin/omarchy-shell" "$HOME/bin/omarchy-restart-shell"
 export PATH="$HOME/bin:$PATH"
 
-repo="$FRED_PUBLISHED_ROOT/omarchy-fred-demo"
+repo="$FRED_PUBLISHED_ROOT/demo-fred-tamlinux"
 git -C "$repo" init -q
 git -C "$repo" config user.name Test
 git -C "$repo" config user.email test@example.invalid

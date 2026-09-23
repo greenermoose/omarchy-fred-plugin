@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# omarchy-fred-plugin — Discover, install, and manage Fred's Omarchy shell plugins (fred.*)
+# tam-plugin — Discover, install, and manage Fred's Omarchy shell plugins (fred.*)
 #
 # Part of the Omarchy Fred Plugin Suite (https://github.com/greenermoose/plugin-fred-tamlinux)
 # License: GPL-3.0-or-later
@@ -10,13 +10,13 @@ VERSION="1.1.1"
 
 # Directories
 LIVE_DIR="${FRED_LIVE_DIR:-${HOME}/.config/omarchy/plugins}"
-CACHE_DIR="${HOME}/.cache/omarchy-fred-plugin"
-TEST_ROOT="${FRED_TEST_ROOT:-${XDG_STATE_HOME:-${HOME}/.local/state}/omarchy-fred-plugin/test}"
-PUBLISHED_ROOT="${FRED_PUBLISHED_ROOT:-${HOME}/Code}"
+CACHE_DIR="${HOME}/.cache/tam-plugin"
+TEST_ROOT="${FRED_TEST_ROOT:-${XDG_STATE_HOME:-${HOME}/.local/state}/tam-plugin/test}"
+PUBLISHED_ROOT="${FRED_PUBLISHED_ROOT:-${HOME}/Code/tamlinux}"
 MARKETPLACE_REGISTRY_URL="https://raw.githubusercontent.com/omacom/omarchy-plugin-marketplace/main/registry.json"
 
 # Auto-detect local development config repository if present
-REPO_DIR="${FRED_CONFIG_REPO:-${HOME}/Code/omarchy-fred-config}"
+REPO_DIR="${FRED_CONFIG_REPO:-${HOME}/Code/tamlinux/config-fred-tamlinux}"
 PLUGINS_SRC="${REPO_DIR}/config/omarchy/plugins"
 
 # Known Fred plugins catalog
@@ -48,20 +48,16 @@ declare -A CATALOG_UNPUBLISHED=()
 
 published_dir() {
   local id="$1"
-  if [[ "$id" == "fred.agents" ]]; then
-    printf '%s/agents-fred-tamlinux\n' "$PUBLISHED_ROOT"
-  else
-    printf '%s/omarchy-fred-%s\n' "$PUBLISHED_ROOT" "${id#fred.}"
-  fi
+  printf '%s/%s-fred-tamlinux\n' "$PUBLISHED_ROOT" "${id#fred.}"
 }
 
 fail() {
-  echo "omarchy-fred-plugin: $*" >&2
+  echo "tam-plugin: $*" >&2
   exit 1
 }
 
 warn() {
-  echo "omarchy-fred-plugin: warning: $*" >&2
+  echo "tam-plugin: warning: $*" >&2
 }
 
 # Two caches stand between a deployed plugin file and the running bar:
@@ -98,20 +94,21 @@ reload_shell() {
 
 usage() {
   cat <<USAGE
-omarchy-fred-plugin v${VERSION} — Discover, install, and manage Fred's Omarchy shell plugins
+tam-plugin v${VERSION} — Discover, install, and manage Fred's Omarchy shell plugins
 
 Usage:
-  omarchy-fred-plugin list [--all] [--refresh]
-  omarchy-fred-plugin info <id>
-  omarchy-fred-plugin install <id> [--enable]
-  omarchy-fred-plugin update <id|all>
-  omarchy-fred-plugin remove <id>
-  omarchy-fred-plugin search [query]
-  omarchy-fred-plugin diff <id>
-  omarchy-fred-plugin dev <id> on|off
-  omarchy-fred-plugin test <id> [worktree|<git-ref>|undo|off|status]
-  omarchy-fred-plugin --version
-  omarchy-fred-plugin --help
+  tam-plugin list [--all] [--refresh]
+  tam-plugin info <id>
+  tam-plugin install <id> [--enable]
+  tam-plugin update <id|all>
+  tam-plugin remove <id>
+  tam-plugin search [query]
+  tam-plugin diff <id>
+  tam-plugin dev <id> on|off
+  tam-plugin test <id> [worktree|<git-ref>|undo|off|status]
+  tam-plugin upstream-diff
+  tam-plugin --version
+  tam-plugin --help
 
 Subcommands:
   list              Show status of installed plugins (or all catalog plugins with --all)
@@ -121,9 +118,23 @@ Subcommands:
   remove <id>       Remove an installed plugin via omarchy plugin remove
   search [query]    Search available plugins in Fred's catalog
   diff <id>         [Developer] Diff deployed plugin against local published repo
-  dev <id> on|off   [Developer] Toggle fast QML symlink override to omarchy-fred-config
+  dev <id> on|off   [Developer] Toggle fast QML symlink override to config-fred-tamlinux
   test <id> [...]   [Developer] Test immutable snapshots from the published repo
+  upstream-diff     [Developer] Compare clonedFrom stamps against installed Omarchy
 USAGE
+}
+
+cmd_upstream_diff() {
+  local installed_ver recorded_ver plugin_id upstream
+  installed_ver=$(omarchy version 2>/dev/null || cat /usr/share/omarchy/version 2>/dev/null || echo "unknown")
+  for upstream in "$PLUGINS_SRC"/fred.*/UPSTREAM.md; do
+    [[ -f "$upstream" ]] || continue
+    plugin_id=$(basename "$(dirname "$upstream")")
+    recorded_ver=$(grep -i "Upstream Version:" "$upstream" | head -n 1 | awk '{print $NF}' | tr -d '`*')
+    if [[ -n "$recorded_ver" && "$recorded_ver" != "$installed_ver" ]]; then
+      warn "$plugin_id was cloned from Omarchy $recorded_ver, but installed Omarchy is $installed_ver"
+    fi
+  done
 }
 
 validate_plugin_id() {
@@ -361,7 +372,7 @@ cmd_test_undo() {
   [[ -f "$state/active" ]] || fail "$id is not in snapshot test mode"
   current="$(test_link_target "$state/current")" || fail "current test snapshot is missing"
   previous="$(test_link_target "$state/previous")" ||
-    fail "no previous test snapshot; use 'omarchy-fred-plugin test $id off' to restore the managed version"
+    fail "no previous test snapshot; use 'tam-plugin test $id off' to restore the managed version"
   is_test_snapshot "$id" "$current" || fail "current snapshot pointer is invalid"
   is_test_snapshot "$id" "$previous" || fail "previous snapshot pointer is invalid"
 
@@ -491,7 +502,7 @@ cmd_list() {
   fi
 
   if (( ${#plugin_ids[@]} == 0 )); then
-    echo "No fred.* plugins installed. Use 'omarchy-fred-plugin list --all' or 'search' to discover plugins."
+    echo "No fred.* plugins installed. Use 'tam-plugin list --all' or 'search' to discover plugins."
     return 0
   fi
 
@@ -742,7 +753,7 @@ cmd_dev() {
   local test_state
   test_state="$(test_state_dir "$id")"
   [[ ! -f "$test_state/active" ]] ||
-    fail "$id is in snapshot test mode; run 'omarchy-fred-plugin test $id off' first"
+    fail "$id is in snapshot test mode; run 'tam-plugin test $id off' first"
 
   if [[ "$mode" == "on" ]]; then
     [[ -d "$deployed" ]] || fail "deployed directory not found: $deployed"
@@ -840,8 +851,12 @@ case "${1:-}" in
     shift
     cmd_test "$@"
     ;;
+  upstream-diff)
+    shift
+    cmd_upstream_diff "$@"
+    ;;
   -v|--version)
-    echo "omarchy-fred-plugin v${VERSION}"
+    echo "tam-plugin v${VERSION}"
     ;;
   -h|--help|help)
     usage
