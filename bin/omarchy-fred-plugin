@@ -28,7 +28,7 @@ declare -A CATALOG_REPOS=(
   ["fred.weather"]="https://github.com/greenermoose/weather-fred-tamlinux.git"
   ["fred.tides"]="https://github.com/greenermoose/tides-fred-tamlinux.git"
   ["fred.keyboard"]="https://github.com/greenermoose/keyboard-fred-tamlinux.git"
-  ["fred.agents"]="https://github.com/greenermoose/omarchy-fred-agents.git"
+  ["fred.agents"]="https://github.com/greenermoose/agents-fred-tamlinux.git"
 )
 
 declare -A CATALOG_DESC=(
@@ -44,9 +44,16 @@ declare -A CATALOG_DESC=(
 
 # Catalog entries whose public repository does not exist yet. They are listed so
 # the suite is discoverable, but they cannot be installed or updated.
-declare -A CATALOG_UNPUBLISHED=(
-  ["fred.agents"]=1
-)
+declare -A CATALOG_UNPUBLISHED=()
+
+published_dir() {
+  local id="$1"
+  if [[ "$id" == "fred.agents" ]]; then
+    printf '%s/agents-fred-tamlinux\n' "$PUBLISHED_ROOT"
+  else
+    printf '%s/omarchy-fred-%s\n' "$PUBLISHED_ROOT" "${id#fred.}"
+  fi
+}
 
 fail() {
   echo "omarchy-fred-plugin: $*" >&2
@@ -192,7 +199,8 @@ create_test_snapshot() {
   local id="$1"
   local requested_ref="$2"
   local suffix="${id#fred.}"
-  local source="$PUBLISHED_ROOT/omarchy-fred-${suffix}"
+  local source
+  source="$(published_dir "$id")"
   local state snapshots stage commit dirty label snapshot manifest_id
 
   [[ -d "$source/.git" ]] ||
@@ -553,7 +561,8 @@ cmd_list() {
 
     # Check Published Tag / Git remote
     local suffix="${id#fred.}"
-    local pub_dir="${HOME}/Code/omarchy-fred-${suffix}"
+    local pub_dir
+    pub_dir="$(published_dir "$id")"
     local pub_tag="-"
     if [[ -n "${CATALOG_UNPUBLISHED[$id]:-}" ]]; then
       pub_tag="unpublished"
@@ -705,7 +714,8 @@ cmd_diff() {
 
   local suffix="${id#fred.}"
   local deployed="$PLUGINS_SRC/$id"
-  local published="${HOME}/Code/omarchy-fred-${suffix}"
+  local published
+  published="$(published_dir "$id")"
 
   [[ -d "$deployed" ]] || fail "deployed directory not found: $deployed"
   [[ -d "$published" ]] || fail "published repository not found: $published"

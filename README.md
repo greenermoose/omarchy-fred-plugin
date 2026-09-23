@@ -33,9 +33,9 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 | `fred.tides` | `v1.0.3` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Submitted, under review |
 | `fred.weather` | `v1.0.2` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Not submitted |
 | `fred.monitor` | `v1.0.0` | Display management panel with per-display link retrain / Reset, position labels, and stock monitor fallback | Not submitted |
-| `fred.agents` | — | AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor prompt/token activity at a glance | **Coming soon** — not published yet |
+| `fred.agents` | `v1.1.2` (pre-release) | AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor prompt/token activity at a glance | Available (In testing); not submitted to Marketplace |
 
-"Latest Version" is the newest GitHub release. `fred.agents` has no public repository yet, so it appears in the catalog and in `search` but cannot be installed.
+"Latest Version" is the newest GitHub release, except `fred.agents`, whose public `main` is available for testing at 1.1.2 without a release tag.
 
 Plugin status last verified 2026-09-22 against each repository's releases and the marketplace `registry.json`. Run `omarchy-fred-plugin list --all --refresh` for live status.
 
@@ -75,7 +75,7 @@ omarchy-fred-plugin list --refresh
 Example output:
 ```text
 ID                 INSTALLED  STATE      MARKETPLACE            LATEST GITHUB / LOCAL
-fred.agents        1.1.2      enabled    Coming soon            unpublished
+fred.agents        1.1.2      enabled    Not Listed             (dev)
 fred.clock         1.3.3      enabled    Verified               v1.3.3
 fred.keyboard      1.0.0      enabled    Verified               v1.0.0
 fred.monitor       1.2.3      enabled    Not Listed             v1.0.0
@@ -128,7 +128,7 @@ omarchy-fred-plugin search monitor
 change the running plugin until `test` is run again.
 
 ```bash
-cd ~/Code/omarchy-fred-agents
+cd ~/Code/agents-fred-tamlinux
 git switch -c manual/my-change
 
 # Edit, inspect, and validate without affecting the running system.

@@ -624,11 +624,12 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card clickable" data-href="https://github.com/greenermoose/agents-fred-tamlinux">
           <div class="card-header">
             <h3>fred.agents</h3>
             <div class="badge-group">
-              <span class="badge badge-amber">Coming soon</span>
+              <span class="badge badge-gray">v1.1.2</span>
+              <span class="badge badge-amber">In testing</span>
             </div>
           </div>
           <div class="card-preview placeholder">
@@ -636,7 +637,13 @@
             <span>Screenshot pending</span>
           </div>
           <p>AI agent usage on the bar: Antigravity, Claude, Codex, and Cursor in one panel. Token agents (Claude, Codex) show the usual per-day token chart and per-model breakdown; agents that expose no local token ledger (Cursor, Antigravity) render PROMPTS BY DAY with raw counts, "N prompts · M sessions" tooltips, and no token-by-model section. The panel swaps totals, day rows, and tooltips between the two modes automatically per agent.</p>
-          <p class="note">Not published yet. There is no public repository or install command for <code>fred.agents</code> so far; it runs on Fred's workstation while it is finished. This card will gain a repository link and an install command when it ships.</p>
+          <div class="code-block">
+            <code>omarchy plugin add https://github.com/greenermoose/agents-fred-tamlinux.git --enable</code>
+            <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/agents-fred-tamlinux.git --enable')">Copy</button>
+          </div>
+          <div class="button-group">
+            <a href="https://github.com/greenermoose/agents-fred-tamlinux" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+          </div>
         </div>
 
         <div class="card clickable" data-href="https://github.com/greenermoose/keyboard-fred-tamlinux">
