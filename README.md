@@ -29,8 +29,8 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 | `fred.workspaces` | `v1.5.1` | Workspace numbers with clickable desktop modes (Mac, Windows, Stock), dynamic Windows sets, and unused monitor idle blanking | **Listed** (security baseline passed) |
 | `fred.clock` | `v1.3.3` | Next-event countdown badge, multi-feed iCal sync, interactive agenda, and local event management | **Listed** (security baseline passed) |
 | `fred.keyboard` | `v1.0.0` | Keyboard shortcut visualizer: your actual keyboard, bound keys tinted, capture mode that tells you what any key combination or mouse action runs, and search from a command to its keys | **Listed** (security baseline passed) |
-| `fred.sysinfo` | `v1.1.1` | Universal hardware telemetry with a fresh CPU, available RAM, and free-disk hover summary | Submitted, under review |
-| `fred.tides` | `v1.0.3` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Submitted, under review |
+| `fred.sysinfo` | `v1.1.2` | Universal hardware telemetry with a fresh CPU, available RAM, and free-disk hover summary | Submitted, under review (#7504) |
+| `fred.tides` | `v1.0.4` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Submitted, under review (#7664) |
 | `fred.weather` | `v1.0.2` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Not submitted |
 | `fred.monitor` | `v1.0.0` | Display management panel with per-display link retrain / Reset, position labels, and stock monitor fallback | Not submitted |
 | `fred.agents` | `v1.1.2` (pre-release) | AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor prompt/token activity at a glance | Available (In testing); not submitted to Marketplace |
@@ -79,8 +79,8 @@ fred.agents        1.1.2      enabled    Not Listed             (dev)
 fred.clock         1.3.3      enabled    Verified               v1.3.3
 fred.keyboard      1.0.0      enabled    Verified               v1.0.0
 fred.monitor       1.2.3      enabled    Not Listed             v1.0.0
-fred.sysinfo       1.1.2      enabled    Not Listed             v1.1.1
-fred.tides         1.0.3      enabled    Not Listed             v1.0.3
+fred.sysinfo       1.1.2      enabled    Not Listed             v1.1.2
+fred.tides         1.0.4      enabled    Not Listed             v1.0.4
 fred.weather       1.0.4      enabled    Not Listed             v1.0.3
 fred.workspaces    1.5.1      enabled    Verified               v1.5.1
 ```

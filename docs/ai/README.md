@@ -22,3 +22,4 @@ This directory contains individual session records documenting prompt history, t
 | 2026-09-20 | Publish fred.sysinfo v1.1.2 Resource Hover | `codex` (Codex CLI `0.155.1`) | GPT-5.6 Sol (`gpt-5.6-sol`) | [`2026-09-20-publish-fred-sysinfo-v1.1.2-hover.md`](2026-09-20-publish-fred-sysinfo-v1.1.2-hover.md) |
 | 2026-09-20 | Publish fred.keyboard v0.2.2 (pre-release) | `claude` (Claude Code `2.1.278`) | Claude Opus 5 (`claude-opus-5`) | [`2026-09-20-publish-fred-keyboard-v0.2.2.md`](2026-09-20-publish-fred-keyboard-v0.2.2.md) |
 | 2026-09-22 | Immutable plugin test snapshots and human-authorship publishing rules | `codex` (Codex CLI `0.155.1`) | GPT-5.6 Sol (`gpt-5.6-sol`) | [`2026-09-22-snapshot-testing-and-human-authorship.md`](2026-09-22-snapshot-testing-and-human-authorship.md) |
+| 2026-09-22 | Release fred.tides v1.0.4 and fred.sysinfo v1.1.2 | Cursor `3.21.16` | composer | [`2026-09-22-release-tides-sysinfo.md`](2026-09-22-release-tides-sysinfo.md) |
