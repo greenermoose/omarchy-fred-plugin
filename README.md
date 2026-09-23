@@ -1,4 +1,4 @@
-# Manage Fred's omarchy plugins (omarchy-fred-plugin)
+# Manage Fred's omarchy plugins (tam-plugin)
 
 Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 
@@ -10,7 +10,7 @@ Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 | Property | Value |
 | :-- | :-- |
 | **Showcase Website** | **[greenermoose.github.io/plugin-fred-tamlinux](https://greenermoose.github.io/plugin-fred-tamlinux/)** |
-| **Tool** | `omarchy-fred-plugin` |
+| **Tool** | `tam-plugin` |
 | **Version** | `1.1.1` |
 | **License** | GPL-3.0-or-later |
 | **Authors** | Fred (@greenermoose), Gemini 3.8 Flash, Codex (gpt-5.6-sol), Claude Opus 5 |
@@ -20,7 +20,7 @@ Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 
 ## Overview
 
-The `omarchy-fred-plugin` CLI provides a unified interface to discover, install, update, and manage plugins in the `fred.*` Omarchy shell suite. It connects directly with the official [Omarchy Plugin Marketplace](https://github.com/omacom/omarchy-plugin-marketplace) registry to verify security audit status while providing instant access to bleeding-edge releases.
+The `tam-plugin` CLI provides a unified interface to discover, install, update, and manage plugins in the `fred.*` Omarchy shell suite. It connects directly with the official [Omarchy Plugin Marketplace](https://github.com/omacom/omarchy-plugin-marketplace) registry to verify security audit status while providing instant access to bleeding-edge releases.
 
 ### Available Plugins in the Suite
 
@@ -37,7 +37,7 @@ The `omarchy-fred-plugin` CLI provides a unified interface to discover, install,
 
 "Latest Version" is the newest GitHub release, except `fred.agents`, whose public `main` is available for testing at 1.1.2 without a release tag.
 
-Plugin status last verified 2026-09-22 against each repository's releases and the marketplace `registry.json`. Run `omarchy-fred-plugin list --all --refresh` for live status.
+Plugin status last verified 2026-09-22 against each repository's releases and the marketplace `registry.json`. Run `tam-plugin list --all --refresh` for live status.
 
 ---
 
@@ -45,13 +45,13 @@ Plugin status last verified 2026-09-22 against each repository's releases and th
 
 ### One-line curl installer
 ```bash
-curl -sSL https://raw.githubusercontent.com/greenermoose/omarchy-fred-plugin/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/greenermoose/plugin-fred-tamlinux/main/install.sh | bash
 ```
 
 ### Manual installation
 ```bash
-git clone https://github.com/greenermoose/plugin-fred-tamlinux.git ~/Code/omarchy-fred-plugin
-ln -s ~/Code/omarchy-fred-plugin/bin/omarchy-fred-plugin ~/.local/bin/omarchy-fred-plugin
+git clone https://github.com/greenermoose/plugin-fred-tamlinux.git ~/Code/tamlinux/plugin-fred-tamlinux
+ln -s ~/Code/tamlinux/plugin-fred-tamlinux/bin/tam-plugin ~/.local/bin/tam-plugin
 ```
 
 Ensure `~/.local/bin` is in your `PATH`.
@@ -63,13 +63,13 @@ Ensure `~/.local/bin` is in your `PATH`.
 ### 1. List Installed and Available Plugins
 ```bash
 # Show installed fred.* plugins and their status
-omarchy-fred-plugin list
+tam-plugin list
 
 # Show all plugins in the catalog (including uninstalled)
-omarchy-fred-plugin list --all
+tam-plugin list --all
 
 # Force refresh the marketplace registry cache
-omarchy-fred-plugin list --refresh
+tam-plugin list --refresh
 ```
 
 Example output:
@@ -87,7 +87,7 @@ fred.workspaces    1.5.1      enabled    Verified               v1.5.1
 
 ### 2. Inspect Plugin Details
 ```bash
-omarchy-fred-plugin info fred.workspaces
+tam-plugin info fred.workspaces
 ```
 
 Outputs upstream repository URL, local install path, manifest author, version, and official Omarchy marketplace verification records.
@@ -95,26 +95,26 @@ Outputs upstream repository URL, local install path, manifest author, version, a
 ### 3. Install a Plugin
 ```bash
 # Install and immediately enable in Omarchy shell
-omarchy-fred-plugin install fred.workspaces --enable
+tam-plugin install fred.workspaces --enable
 ```
 
 ### 4. Update Plugins
 ```bash
 # Update all installed fred.* plugins
-omarchy-fred-plugin update all
+tam-plugin update all
 
 # Update a specific plugin
-omarchy-fred-plugin update fred.clock
+tam-plugin update fred.clock
 ```
 
 ### 5. Remove a Plugin
 ```bash
-omarchy-fred-plugin remove fred.clock
+tam-plugin remove fred.clock
 ```
 
 ### 6. Search the Catalog
 ```bash
-omarchy-fred-plugin search monitor
+tam-plugin search monitor
 ```
 
 ---
@@ -124,11 +124,11 @@ omarchy-fred-plugin search monitor
 ### Manual development in the published repository
 
 `test` deploys an immutable snapshot from
-`~/Code/omarchy-fred-<name>`. Editing the repository afterward does not
+`~/Code/tamlinux/<name>-fred-tamlinux`. Editing the repository afterward does not
 change the running plugin until `test` is run again.
 
 ```bash
-cd ~/Code/agents-fred-tamlinux
+cd ~/Code/tamlinux/agents-fred-tamlinux
 git switch -c manual/my-change
 
 # Edit, inspect, and validate without affecting the running system.
@@ -138,57 +138,57 @@ git diff --check
 omarchy plugin validate .
 
 # Snapshot the current working tree and test it locally.
-omarchy-fred-plugin test fred.agents
-omarchy-fred-plugin test fred.agents status
+tam-plugin test fred.agents
+tam-plugin test fred.agents status
 
 # After more edits, deploy a new snapshot. Undo toggles between the two most
 # recently tested snapshots; off restores the exact pre-test installation.
-omarchy-fred-plugin test fred.agents
-omarchy-fred-plugin test fred.agents undo
-omarchy-fred-plugin test fred.agents off
+tam-plugin test fred.agents
+tam-plugin test fred.agents undo
+tam-plugin test fred.agents off
 
 # A Git ref can be tested independently of uncommitted working-tree changes.
-omarchy-fred-plugin test fred.agents HEAD~1
+tam-plugin test fred.agents HEAD~1
 ```
 
 Snapshots and their metadata live under
-`${XDG_STATE_HOME:-~/.local/state}/omarchy-fred-plugin/test/<id>/`. The
+`${XDG_STATE_HOME:-~/.local/state}/tam-plugin/test/<id>/`. The
 original live plugin directory is moved there while test mode is active and
 restored by `test <id> off`. Test mode refuses to replace an existing dev
 symlink, and dev mode refuses to replace an active test snapshot.
 
 ### Fast editing in the deployed configuration
 
-For the established development workflow against an `omarchy-config`
-dotfiles repository:
+For the established development workflow against the
+`config-fred-tamlinux` checkout:
 
 ```bash
 # Toggle fast QML development symlink override (bypasses read-only store symlinks)
-omarchy-fred-plugin dev fred.clock on
+tam-plugin dev fred.clock on
 
-# Edit QML files in ~/Code/omarchy-config/config/omarchy/plugins/fred.clock/...
+# Edit QML files in ~/Code/tamlinux/config-fred-tamlinux/config/omarchy/plugins/fred.clock/...
 # manifest.json edits are picked up live; QML/JS edits are not: Quickshell 0.3.1
 # cannot clear its in-memory component cache, and Qt's on-disk qmlcache trusts
 # the source mtime (a constant 1970 for Nix store files). `dev on|off` and
 # `update` purge ~/.cache/quickshell/qmlcache for the plugins and restart the
 # shell; after a plain home-manager switch do the same by hand:
-omarchy-fred-plugin dev fred.clock off   # or: omarchy-restart-shell after purging
+tam-plugin dev fred.clock off   # or: omarchy-restart-shell after purging
 
 # Restore Home Manager store links when done. This refuses to switch while
 # another plugin override remains, because Home Manager could otherwise
 # replace differing files through that symlink. It also refuses while this
 # plugin has uncommitted deployed-copy changes.
-omarchy-fred-plugin dev fred.clock off
+tam-plugin dev fred.clock off
 
 # Diff local deployed config against public published repo
-omarchy-fred-plugin diff fred.clock
+tam-plugin diff fred.clock
 ```
 
 ---
 
 ## Acknowledgments
 
-Developed through transparent multi-agent AI pair programming with [Antigravity](https://antigravity.google) (Google DeepMind), Claude (Anthropic), and Codex (OpenAI). This project standardizes transparent AI prompt and model tracking across all `omarchy-fred-*` repositories. See [`AI_PROVENANCE.md`](AI_PROVENANCE.md) and [`docs/ai/`](docs/ai/) for session logs, model versions, and architectural decisions.
+Developed through transparent multi-agent AI pair programming with [Antigravity](https://antigravity.google) (Google DeepMind), Claude (Anthropic), and Codex (OpenAI). This project standardizes transparent AI prompt and model tracking across all `*-fred-tamlinux` repositories. See [`AI_PROVENANCE.md`](AI_PROVENANCE.md) and [`docs/ai/`](docs/ai/) for session logs, model versions, and architectural decisions.
 
 ---
 
