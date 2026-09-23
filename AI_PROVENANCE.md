@@ -12,7 +12,7 @@ Rather than relying on a single AI model or interface, Fred uses a specialized t
 | :-- | :-- | :-- | :-- |
 | **Claude Code** (`claude`) | `2.1.278` | Claude Opus 5 (`claude-opus-5`) | **Architecture & System Planning**: Authoring durable system specifications, multi-step runbooks, and cross-cutting policies. |
 | **Codex CLI** (`codex`) | `0.155.1` | `gpt-6-astra`, `gpt-6-sol`, `gpt-5.6-sol`, `gpt-5.6-terra` | **Architecture & System Planning**: Second opinion on plans and specifications alongside Claude. |
-| **Antigravity CLI** (`agy`) | `1.2.2` – `1.2.8` | Gemini 3.8 Flash (High) | **Coding, Refactoring & Implementation**: Primary coding partner for multi-file pair-programming, security remediation, bash/Python/QML engineering, and git release workflow. |
+| **Antigravity CLI** (`agy`) | `1.2.2` – `1.2.9` | Gemini 3.8 Flash (High) | **Coding, Refactoring & Implementation**: Primary coding partner for multi-file pair-programming, security remediation, bash/Python/QML engineering, and git release workflow. |
 | **OpenCode** (`opencode`) | `1.18.31` | Big Pickle | **Distro & System Q&A**: Efficient lookups for Arch Linux / Omarchy package specifics and shell configuration, conserving frontier-model token budgets. |
 | **Grok CLI** (`grok`) | `1.0.25` (`f7e67d6988e2`, stable) | Grok 4.6 | **Workstation Support**: Additional debugging, hardware diagnostics, and alternative implementation analysis. |
 
@@ -63,5 +63,6 @@ The [2026-09-22 repository rename session](docs/ai/2026-09-22-github-repository-
 | [**2026-09-22**](docs/ai/2026-09-22-tam-plugin-rename.md) | Rename CLI to tam-plugin | Cursor `3.21.16` (`composer`) | composer | Daily command is `tam-plugin`; defaults look under `~/Code/tamlinux`. |
 | [**2026-09-22**](docs/ai/2026-09-22-tamlinux-branding.md) | Rebrand the suite to Tamlinux | Cursor `3.21.16` (`composer`) | composer | Showcase and CLI help say Fred's Tamlinux Plugin Suite; leftover `omarchy-fred-plugin` installer URL and CLI examples on the Pages site point at `tam-plugin`. |
 | [**2026-09-23**](docs/ai/2026-09-23-plugin-releases.md) | Complete the Stage 1 plugin releases | Codex CLI `0.155.1` | `gpt-6-sol` | Synced the suite catalog and showcase with the published workspaces 1.5.2, agents 1.1.2, weather 1.0.4, and monitor 1.2.3 GitHub Releases; marked the newer workspaces marketplace update as unverified. |
+| [**2026-09-23**](docs/ai/2026-09-23-showcase-link-contrast-dark-theme.md) | Showcase Link Readability & Contrast on Dark Theme | `agy` (Antigravity CLI `1.2.9`) | Gemini 3.8 Flash (High) | Fixed CSS link contrast on dark background with readable sky-blue unvisited and light-purple visited styles, protected UI components from visited color override, and linked Tamlinux repo in lead text. |
 
 Detailed prompts and decisions are recorded in individual session logs under [`docs/ai/`](docs/ai/).
