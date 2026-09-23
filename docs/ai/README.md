@@ -27,3 +27,7 @@ This directory contains individual session records documenting prompt history, t
 | 2026-09-22 | Rebrand the suite to Tamlinux | Cursor `3.21.16` | composer | [`2026-09-22-tamlinux-branding.md`](2026-09-22-tamlinux-branding.md) |
 | 2026-09-23 | Complete the Stage 1 plugin releases | Codex CLI `0.155.1` | `gpt-6-sol` | [`2026-09-23-plugin-releases.md`](2026-09-23-plugin-releases.md) |
 | 2026-09-23 | Showcase Link Readability & Contrast on Dark Theme | `agy` (Antigravity CLI `1.2.9`) | Gemini 3.8 Flash (High) | [`2026-09-23-showcase-link-contrast-dark-theme.md`](2026-09-23-showcase-link-contrast-dark-theme.md) |
+
+## 2026-09-23 upstream survey foundation
+
+- [Codex session record](2026-09-23-upstream-survey-foundation.md).
