@@ -658,14 +658,14 @@
           <div class="card-header">
             <h3>fred.agents</h3>
             <div class="badge-group">
-              <span class="badge badge-gray">v1.1.2</span>
+              <span class="badge badge-gray">v1.2.0</span>
             </div>
           </div>
           <div class="card-preview placeholder">
             <svg viewBox="0 0 16 16" fill="none" stroke-width="1.5"><rect x="1.5" y="1.5" width="13" height="13" rx="2"/><path d="M4 6h2M4 9h5M9 5h3"/></svg>
             <span>Screenshot pending</span>
           </div>
-          <p>AI agent usage on the bar: Antigravity, Claude, Codex, and Cursor in one panel. Token agents (Claude, Codex) show the usual per-day token chart and per-model breakdown; agents that expose no local token ledger (Cursor, Antigravity) render PROMPTS BY DAY with raw counts, "N prompts · M sessions" tooltips, and no token-by-model section. The panel swaps totals, day rows, and tooltips between the two modes automatically per agent.</p>
+          <p>AI agent usage on the bar: Antigravity, Claude, Codex, and Cursor in one panel. Displays live rate-limit meters and reset countdowns for all subscriptions (including Google AI Pro for Antigravity). Token agents (Claude, Codex) show the per-day token chart; prompt-mode agents (Cursor, Antigravity) render PROMPTS BY DAY with raw counts and session counts.</p>
           <div class="code-block">
             <code>omarchy plugin add https://github.com/greenermoose/agents-fred-tamlinux.git --enable</code>
             <button class="copy-btn" title="Copy to clipboard" aria-label="Copy to clipboard" onclick="event.stopPropagation(); copyCode(this, 'omarchy plugin add https://github.com/greenermoose/agents-fred-tamlinux.git --enable')">Copy</button>

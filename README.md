@@ -33,7 +33,7 @@ The `tam-plugin` CLI provides a unified interface to discover, install, update, 
 | `fred.tides` | `v1.0.4` | Multi-monitor tide widget with current sea level, 24-hour scrubbable curve, and high/low timeline | Submitted, under review (#7664) |
 | `fred.weather` | `v1.0.4` | Multi-monitor weather widget with current conditions, 48-hour timeline, 10-day forecast, and solar timeline | Not submitted |
 | `fred.monitor` | `v1.2.3` | Display management panel with saved layouts, guarded Apply/Keep/Revert, brightness, and per-display link Reset | Not submitted |
-| `fred.agents` | `v1.1.2` | AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor prompt/token activity at a glance | Not submitted |
+| `fred.agents` | `v1.1.2` | AI agent usage bar plugin: Antigravity, Claude, Codex, and Cursor activity and live subscription limits at a glance | Not submitted |
 
 "Latest Version" is the newest GitHub release. New marketplace submissions and verification requests are paused during the Stage 1 Tamlinux transition.
 
@@ -75,7 +75,7 @@ tam-plugin list --refresh
 Example output:
 ```text
 ID                 INSTALLED  STATE      MARKETPLACE            LATEST GITHUB / LOCAL
-fred.agents        1.1.2      enabled    Not Listed             v1.1.2
+fred.agents        1.2.0      enabled    Not Listed             v1.1.2
 fred.clock         1.3.3      enabled    Verified               v1.3.3
 fred.keyboard      1.0.0      enabled    Verified               v1.0.0
 fred.monitor       1.2.3      enabled    Not Listed             v1.2.3
