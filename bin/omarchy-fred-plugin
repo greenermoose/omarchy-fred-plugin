@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # omarchy-fred-plugin — Discover, install, and manage Fred's Omarchy shell plugins (fred.*)
 #
-# Part of the Omarchy Fred Plugin Suite (https://github.com/greenermoose/omarchy-fred-plugin)
+# Part of the Omarchy Fred Plugin Suite (https://github.com/greenermoose/plugin-fred-tamlinux)
 # License: GPL-3.0-or-later
 
 set -euo pipefail
@@ -21,13 +21,13 @@ PLUGINS_SRC="${REPO_DIR}/config/omarchy/plugins"
 
 # Known Fred plugins catalog
 declare -A CATALOG_REPOS=(
-  ["fred.workspaces"]="https://github.com/greenermoose/omarchy-fred-workspaces.git"
-  ["fred.clock"]="https://github.com/greenermoose/omarchy-fred-clock.git"
-  ["fred.sysinfo"]="https://github.com/greenermoose/omarchy-fred-sysinfo.git"
-  ["fred.monitor"]="https://github.com/greenermoose/omarchy-fred-monitor.git"
-  ["fred.weather"]="https://github.com/greenermoose/omarchy-fred-weather.git"
-  ["fred.tides"]="https://github.com/greenermoose/omarchy-fred-tides.git"
-  ["fred.keyboard"]="https://github.com/greenermoose/omarchy-fred-keyboard.git"
+  ["fred.workspaces"]="https://github.com/greenermoose/workspaces-fred-tamlinux.git"
+  ["fred.clock"]="https://github.com/greenermoose/clock-fred-tamlinux.git"
+  ["fred.sysinfo"]="https://github.com/greenermoose/sysinfo-fred-tamlinux.git"
+  ["fred.monitor"]="https://github.com/greenermoose/monitor-fred-tamlinux.git"
+  ["fred.weather"]="https://github.com/greenermoose/weather-fred-tamlinux.git"
+  ["fred.tides"]="https://github.com/greenermoose/tides-fred-tamlinux.git"
+  ["fred.keyboard"]="https://github.com/greenermoose/keyboard-fred-tamlinux.git"
   ["fred.agents"]="https://github.com/greenermoose/omarchy-fred-agents.git"
 )
 

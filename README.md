@@ -2,14 +2,14 @@
 
 Discover, install, verify, and manage Fred's Omarchy shell plugins (`fred.*`).
 
-> ### [Fred's Omarchy Plugin Showcase](https://greenermoose.github.io/omarchy-fred-plugin/)
-> **[https://greenermoose.github.io/omarchy-fred-plugin/](https://greenermoose.github.io/omarchy-fred-plugin/)**
+> ### [Fred's Omarchy Plugin Showcase](https://greenermoose.github.io/plugin-fred-tamlinux/)
+> **[https://greenermoose.github.io/plugin-fred-tamlinux/](https://greenermoose.github.io/plugin-fred-tamlinux/)**
 >
 > See the full gallery of Fred's omarchy plugins.
 
 | Property | Value |
 | :-- | :-- |
-| **Showcase Website** | **[greenermoose.github.io/omarchy-fred-plugin](https://greenermoose.github.io/omarchy-fred-plugin/)** |
+| **Showcase Website** | **[greenermoose.github.io/plugin-fred-tamlinux](https://greenermoose.github.io/plugin-fred-tamlinux/)** |
 | **Tool** | `omarchy-fred-plugin` |
 | **Version** | `1.1.1` |
 | **License** | GPL-3.0-or-later |
@@ -50,7 +50,7 @@ curl -sSL https://raw.githubusercontent.com/greenermoose/omarchy-fred-plugin/mai
 
 ### Manual installation
 ```bash
-git clone https://github.com/greenermoose/omarchy-fred-plugin.git ~/Code/omarchy-fred-plugin
+git clone https://github.com/greenermoose/plugin-fred-tamlinux.git ~/Code/omarchy-fred-plugin
 ln -s ~/Code/omarchy-fred-plugin/bin/omarchy-fred-plugin ~/.local/bin/omarchy-fred-plugin
 ```
 

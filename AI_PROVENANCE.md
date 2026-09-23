@@ -11,7 +11,7 @@ Rather than relying on a single AI model or interface, Fred uses a specialized t
 | Tool & Interface | CLI Version | Backing Models | Primary Role in the Ecosystem |
 | :-- | :-- | :-- | :-- |
 | **Claude Code** (`claude`) | `2.1.278` | Claude Opus 5 (`claude-opus-5`) | **Architecture & System Planning**: Authoring durable system specifications, multi-step runbooks, and cross-cutting policies. |
-| **Codex CLI** (`codex`) | `0.155.1` | `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra` | **Architecture & System Planning**: Second opinion on plans and specifications alongside Claude. |
+| **Codex CLI** (`codex`) | `0.155.1` | `gpt-6-astra`, `gpt-6-sol`, `gpt-5.6-sol`, `gpt-5.6-terra` | **Architecture & System Planning**: Second opinion on plans and specifications alongside Claude. |
 | **Antigravity CLI** (`agy`) | `1.2.2` – `1.2.8` | Gemini 3.8 Flash (High) | **Coding, Refactoring & Implementation**: Primary coding partner for multi-file pair-programming, security remediation, bash/Python/QML engineering, and git release workflow. |
 | **OpenCode** (`opencode`) | `1.18.31` | Big Pickle | **Distro & System Q&A**: Efficient lookups for Arch Linux / Omarchy package specifics and shell configuration, conserving frontier-model token budgets. |
 | **Grok CLI** (`grok`) | `1.0.25` (`f7e67d6988e2`, stable) | Grok 4.6 | **Workstation Support**: Additional debugging, hardware diagnostics, and alternative implementation analysis. |
@@ -34,6 +34,8 @@ Every repository in the `omarchy-fred-*` suite implements:
 ---
 
 ## 3. Session Log Directory
+
+The [2026-09-22 repository rename session](docs/ai/2026-09-22-github-repository-renames.md) records the URL and showcase changes made with Codex CLI `0.155.1` (`gpt-6-sol`).
 
 | Session Date | Topic | Primary Tool | Primary Model | Summary |
 | :-- | :-- | :-- | :-- | :-- |
