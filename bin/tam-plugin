@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
-# tam-plugin — Discover, install, and manage Fred's Tamlinux shell plugins (fred.*)
+# tam-plugin — Discover, install, and manage Fred's Omarchy shell plugins (fred.*)
 #
-# Part of the Tamlinux Plugin Suite (https://github.com/greenermoose/plugin-fred-tamlinux)
+# Part of the Omarchy Fred Plugin Suite (https://github.com/greenermoose/plugin-fred-tamlinux)
 # License: GPL-3.0-or-later
 
 set -euo pipefail
 
-VERSION="1.1.1"
+VERSION="1.2.0"
 
 # Directories
 LIVE_DIR="${FRED_LIVE_DIR:-${HOME}/.config/omarchy/plugins}"
 CACHE_DIR="${HOME}/.cache/tam-plugin"
-TEST_ROOT="${FRED_TEST_ROOT:-${XDG_STATE_HOME:-${HOME}/.local/state}/tam-plugin/test}"
+STATE_ROOT="${FRED_STATE_ROOT:-${XDG_STATE_HOME:-${HOME}/.local/state}/tam-plugin}"
+DEV_ROOT="${FRED_DEV_ROOT:-${STATE_ROOT}/dev}"
+TEST_ROOT="${FRED_TEST_ROOT:-${STATE_ROOT}/test}"
 PUBLISHED_ROOT="${FRED_PUBLISHED_ROOT:-${HOME}/Code/tamlinux}"
 MARKETPLACE_REGISTRY_URL="https://raw.githubusercontent.com/omacom/omarchy-plugin-marketplace/main/registry.json"
 
@@ -119,7 +121,7 @@ reload_shell() {
 
 usage() {
   cat <<USAGE
-tam-plugin v${VERSION} — Discover, install, and manage Fred's Tamlinux shell plugins
+tam-plugin v${VERSION} — Discover, install, and manage Fred's Omarchy shell plugins
 
 Usage:
   tam-plugin list [--all] [--refresh]
@@ -129,8 +131,11 @@ Usage:
   tam-plugin remove <id>
   tam-plugin search [query]
   tam-plugin diff <id>
+  tam-plugin verify <id>
   tam-plugin dev <id> on|off
-  tam-plugin test <id> [worktree|<git-ref>|undo|off|status]
+  tam-plugin test <id> [worktree|<git-ref>|undo|off|status] [--source deployed|published]
+  tam-plugin run <id>
+  tam-plugin restore <id>
   tam-plugin upstream-diff
   tam-plugin --version
   tam-plugin --help
@@ -143,8 +148,11 @@ Subcommands:
   remove <id>       Remove an installed plugin via omarchy plugin remove
   search [query]    Search available plugins in Fred's catalog
   diff <id>         [Developer] Diff deployed plugin against local published repo
+  verify <id>       [Developer] Verify payload digests and check for behavior-bearing drift
   dev <id> on|off   [Developer] Toggle fast QML symlink override to the local workstation config checkout
-  test <id> [...]   [Developer] Test immutable snapshots from the published repo
+  test <id> [...]   [Developer] Test immutable snapshots (--source deployed|published)
+  run <id>          [Developer] Transition candidate to Run mode (activate, record run, update bom.json)
+  restore <id>      [Developer] Restore managed plugin state from active override or stale recovery
   upstream-diff     [Developer] Compare clonedFrom stamps against installed Omarchy
 USAGE
 }
@@ -170,6 +178,10 @@ validate_plugin_id() {
 
 test_state_dir() {
   printf '%s/%s\n' "$TEST_ROOT" "$1"
+}
+
+dev_state_dir() {
+  printf '%s/%s\n' "$DEV_ROOT" "$1"
 }
 
 test_link_target() {
@@ -216,17 +228,103 @@ switch_live_to_snapshot() {
   mv -Tf -- "$tmp" "$live"
 }
 
+is_distribution_file() {
+  local rel="$1"
+  case "$rel" in
+    README.md|LICENSE|CHANGELOG.md|UPSTREAM.md|AI_PROVENANCE.md|.gitignore|.payload.*)
+      return 0
+      ;;
+    docs/*|upstream/*|tests/*|.git/*|assets/screenshots/*)
+      return 0
+      ;;
+    preview.png)
+      return 0
+      ;;
+    *__pycache__*|*.pyc|*.bak*|*~|*.swp)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+generate_payload_manifest() {
+  local dir="$1"
+  local outfile="$2"
+  local tmpfile="${outfile}.tmp.$$"
+  rm -f -- "$tmpfile"
+
+  (
+    cd "$dir"
+    local file_list=()
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      while IFS= read -r -d '' f; do
+        [[ -n "$f" ]] && file_list+=("$f")
+      done < <({ git ls-files -z; git ls-files --others --exclude-standard -z; })
+    else
+      while IFS= read -r -d '' f; do
+        [[ -n "$f" ]] && file_list+=("${f#./}")
+      done < <(find . \( -type f -o -type l \) -print0)
+    fi
+
+    if (( ${#file_list[@]} > 0 )); then
+      printf '%s\n' "${file_list[@]}" | LC_ALL=C sort -u | while IFS= read -r rel; do
+        [[ -n "$rel" ]] || continue
+        if is_distribution_file "$rel"; then
+          continue
+        fi
+        local mode hash
+        if [[ -L "$rel" ]]; then
+          local target
+          target="$(readlink "$rel")"
+          mode="symlink"
+          hash="$(printf '%s' "$target" | sha256sum | awk '{print $1}')"
+        elif [[ -f "$rel" ]]; then
+          if [[ -x "$rel" ]]; then
+            mode="0755"
+          else
+            mode="0644"
+          fi
+          hash="$(sha256sum "$rel" | awk '{print $1}')"
+        else
+          continue
+        fi
+        printf '%s  %s  %s\n' "$hash" "$mode" "$rel" >> "$tmpfile"
+      done
+    fi
+  )
+
+  if [[ ! -f "$tmpfile" ]]; then
+    touch "$tmpfile"
+  fi
+  mv -f "$tmpfile" "$outfile"
+}
+
+compute_payload_digest() {
+  local manifest_file="$1"
+  if [[ -s "$manifest_file" ]]; then
+    sha256sum "$manifest_file" | awk '{print $1}'
+  else
+    echo "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  fi
+}
+
 write_snapshot_metadata() {
   local metadata="$1"
   local source="$2"
-  local requested_ref="$3"
-  local commit="$4"
-  local dirty="$5"
+  local source_type="$3"
+  local requested_ref="$4"
+  local commit="$5"
+  local dirty="$6"
+  local digest="$7"
   {
     printf 'source: %s\n' "$source"
+    printf 'source-type: %s\n' "$source_type"
     printf 'requested-ref: %s\n' "$requested_ref"
     printf 'commit: %s\n' "$commit"
     printf 'working-tree-dirty: %s\n' "$dirty"
+    printf 'payload-digest: %s\n' "$digest"
     printf 'created-at: %s\n' "$(date --iso-8601=seconds)"
   } > "$metadata"
 }
@@ -234,17 +332,29 @@ write_snapshot_metadata() {
 create_test_snapshot() {
   local id="$1"
   local requested_ref="$2"
+  local source_type="${3:-published}"
   local suffix="${id#fred.}"
-  local source
-  source="$(published_dir "$id")"
-  local state snapshots stage commit dirty label snapshot manifest_id
+  local source repo_root rel_prefix
 
-  [[ -d "$source/.git" ]] ||
-    fail "published repository not found: $source (set FRED_PUBLISHED_ROOT to customize)"
+  if [[ "$source_type" == "deployed" ]]; then
+    [[ -n "$REPO_DIR" && -d "$REPO_DIR" ]] || fail "test from deployed source requires local workstation config checkout"
+    source="$PLUGINS_SRC/$id"
+    repo_root="$REPO_DIR"
+    rel_prefix="config/omarchy/plugins/$id"
+    [[ -d "$source" ]] || fail "deployed directory not found: $source"
+  else
+    source="$(published_dir "$id")"
+    repo_root="$source"
+    rel_prefix=""
+    [[ -d "$source/.git" ]] ||
+      fail "published repository not found: $source (set FRED_PUBLISHED_ROOT to customize)"
+  fi
+
   command -v git >/dev/null 2>&1 || fail "git is required for test snapshots"
   command -v tar >/dev/null 2>&1 || fail "tar is required for test snapshots"
   command -v jq >/dev/null 2>&1 || fail "jq is required for test snapshots"
 
+  local state snapshots stage commit dirty label snapshot manifest_id
   state="$(test_state_dir "$id")"
   snapshots="$state/snapshots"
   mkdir -p -- "$snapshots"
@@ -253,27 +363,69 @@ create_test_snapshot() {
   mkdir -- "$stage"
 
   if [[ "$requested_ref" == "worktree" ]]; then
-    commit="$(git -C "$source" rev-parse --short=12 HEAD 2>/dev/null || printf 'unborn')"
-    if [[ -n "$(git -C "$source" status --porcelain --untracked-files=all)" ]]; then
+    commit="$(git -C "$repo_root" rev-parse --short=12 HEAD 2>/dev/null || printf 'unborn')"
+    local dirty_check
+    if [[ -n "$rel_prefix" ]]; then
+      dirty_check="$(git -C "$repo_root" status --porcelain --untracked-files=all -- "$rel_prefix" 2>/dev/null || true)"
+    else
+      dirty_check="$(git -C "$repo_root" status --porcelain --untracked-files=all 2>/dev/null || true)"
+    fi
+    if [[ -n "$dirty_check" ]]; then
       dirty="yes"
     else
       dirty="no"
     fi
-    if ! tar --exclude='./.git' --exclude='./.git/*' -C "$source" -cf - . |
-      tar -C "$stage" -xf -; then
-      rm -rf -- "$stage"
-      fail "could not snapshot working tree at $source"
+
+    # Exact Git-aware copying respecting .gitignore (excludes __pycache__, .pyc, etc.)
+    if [[ -n "$rel_prefix" ]]; then
+      if ! (
+        cd "$repo_root"
+        {
+          git ls-files -z -- "$rel_prefix"
+          git ls-files --others --exclude-standard -z -- "$rel_prefix"
+        } | (
+          while IFS= read -r -d '' f; do
+            sub="${f#$rel_prefix/}"
+            [[ -n "$sub" && "$sub" != "$f" ]] && printf '%s\0' "$sub"
+          done
+        ) | tar -C "$source" --null -T - -c -f - | tar -C "$stage" -x -f -
+      ); then
+        rm -rf -- "$stage"
+        fail "could not snapshot working tree from $source"
+      fi
+    else
+      if ! (
+        cd "$source"
+        {
+          git ls-files -z
+          git ls-files --others --exclude-standard -z
+        } | tar --null -T - -c -f - | tar -C "$stage" -x -f -
+      ); then
+        rm -rf -- "$stage"
+        fail "could not snapshot working tree at $source"
+      fi
     fi
   else
-    commit="$(git -C "$source" rev-parse --verify "$requested_ref^{commit}" 2>/dev/null)" || {
+    commit="$(git -C "$repo_root" rev-parse --verify "$requested_ref^{commit}" 2>/dev/null)" || {
       rm -rf -- "$stage"
-      fail "unknown git ref '$requested_ref' in $source"
+      fail "unknown git ref '$requested_ref' in $repo_root"
     }
     commit="${commit:0:12}"
     dirty="not-applicable"
-    if ! git -C "$source" archive "$requested_ref" | tar -C "$stage" -xf -; then
-      rm -rf -- "$stage"
-      fail "could not snapshot git ref '$requested_ref'"
+
+    if [[ -n "$rel_prefix" ]]; then
+      if ! (
+        git -C "$repo_root" archive "$requested_ref" "$rel_prefix" |
+          tar --strip-components=3 -C "$stage" -xf -
+      ); then
+        rm -rf -- "$stage"
+        fail "could not snapshot git ref '$requested_ref' from $source"
+      fi
+    else
+      if ! git -C "$source" archive "$requested_ref" | tar -C "$stage" -xf -; then
+        rm -rf -- "$stage"
+        fail "could not snapshot git ref '$requested_ref'"
+      fi
     fi
   fi
 
@@ -286,6 +438,26 @@ create_test_snapshot() {
     rm -rf -- "$stage"
     fail "snapshot manifest id '$manifest_id' does not match requested id '$id'"
   }
+
+  # Symlink escape check
+  local bad_links=()
+  while IFS= read -r sym; do
+    local tgt
+    tgt="$(readlink -f "$sym" || true)"
+    if [[ "$tgt" != "$stage"* ]]; then
+      bad_links+=("$sym -> $tgt")
+    fi
+  done < <(find "$stage" -type l)
+  if (( ${#bad_links[@]} > 0 )); then
+    rm -rf -- "$stage"
+    fail "snapshot contains escaping symlinks: ${bad_links[*]}"
+  fi
+
+  # Generate payload manifest and digest
+  generate_payload_manifest "$stage" "$stage/.payload.manifest"
+  local digest
+  digest="$(compute_payload_digest "$stage/.payload.manifest")"
+  printf '%s\n' "$digest" > "$stage/.payload.digest"
 
   if command -v omarchy >/dev/null 2>&1; then
     if ! omarchy plugin validate "$stage" >&2; then
@@ -308,7 +480,7 @@ create_test_snapshot() {
   mv -- "$stage" "$snapshot"
   find "$snapshot" -type d -exec chmod u+rwx,go-rwx {} +
   find "$snapshot" -type f -exec chmod a-w {} +
-  write_snapshot_metadata "${snapshot}.meta" "$source" "$requested_ref" "$commit" "$dirty"
+  write_snapshot_metadata "${snapshot}.meta" "$source" "$source_type" "$requested_ref" "$commit" "$dirty" "$digest"
   printf '%s\n' "$snapshot"
 }
 
@@ -359,7 +531,22 @@ cmd_test_status() {
   is_test_snapshot "$id" "$target" || fail "test state is inconsistent: live target is outside $state/snapshots"
   echo "test: mode ON for $id"
   echo "snapshot: $target"
-  [[ -f "${target}.meta" ]] && sed 's/^/  /' "${target}.meta"
+  if [[ -f "${target}.meta" ]]; then
+    sed 's/^/  /' "${target}.meta"
+  fi
+  if [[ -f "$target/.payload.digest" ]]; then
+    local recorded_digest current_manifest current_digest
+    recorded_digest="$(cat "$target/.payload.digest")"
+    current_manifest="$(mktemp)"
+    generate_payload_manifest "$target" "$current_manifest"
+    current_digest="$(compute_payload_digest "$current_manifest")"
+    rm -f "$current_manifest"
+    if [[ "$recorded_digest" == "$current_digest" ]]; then
+      echo "  payload-integrity: verified ($recorded_digest)"
+    else
+      echo "  payload-integrity: WARNING: snapshot payload modified ($current_digest vs $recorded_digest)" >&2
+    fi
+  fi
 }
 
 cmd_test_off() {
@@ -409,10 +596,44 @@ cmd_test_undo() {
 }
 
 cmd_test() {
-  local id="${1:-}"
-  local action="${2:-worktree}"
+  local id=""
+  local action=""
+  local source_type="published"
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --source=*)
+        source_type="${1#*=}"
+        shift
+        ;;
+      --source)
+        source_type="${2:-published}"
+        shift 2
+        ;;
+      status|off|undo)
+        action="$1"
+        shift
+        ;;
+      fred.*)
+        id="$1"
+        shift
+        ;;
+      *)
+        if [[ -z "$id" && "$1" =~ ^[A-Za-z0-9] ]]; then
+          id="$1"
+        elif [[ -z "$action" ]]; then
+          action="$1"
+        fi
+        shift
+        ;;
+    esac
+  done
+
   [[ -n "$id" ]] || fail "test requires a plugin id (e.g. fred.agents)"
   validate_plugin_id "$id"
+  [[ "$source_type" == "published" || "$source_type" == "deployed" ]] ||
+    fail "test source must be 'published' or 'deployed'"
+  action="${action:-worktree}"
   umask 077
 
   case "$action" in
@@ -428,7 +649,7 @@ cmd_test() {
     *)
       local state snapshot old_current
       state="$(test_state_dir "$id")"
-      snapshot="$(create_test_snapshot "$id" "$action")"
+      snapshot="$(create_test_snapshot "$id" "$action" "$source_type")"
       enter_test_mode "$id"
       old_current="$(test_link_target "$state/current" 2>/dev/null || true)"
       if [[ -n "$old_current" ]]; then
@@ -617,7 +838,7 @@ cmd_info() {
   [[ -n "$id" ]] || fail "info requires a plugin id (e.g. fred.clock)"
 
   local repo_url="${CATALOG_REPOS[$id]:-https://github.com/greenermoose/omarchy-$id.git}"
-  local desc="${CATALOG_DESC[$id]:-Personal Tamlinux shell plugin}"
+  local desc="${CATALOG_DESC[$id]:-Personal Omarchy shell plugin}"
 
   echo "Plugin:      $id"
   echo "Description: $desc"
@@ -764,6 +985,216 @@ cmd_diff() {
     "$deployed" "$published" || true
 }
 
+cmd_verify() {
+  local id="${1:-}"
+  [[ -n "$id" ]] || fail "verify requires a plugin id (e.g. fred.clock)"
+  validate_plugin_id "$id"
+  [[ -n "$REPO_DIR" && -d "$REPO_DIR" ]] || fail "verify requires a local workstation config checkout"
+
+  local deployed="$PLUGINS_SRC/$id"
+  local published
+  published="$(published_dir "$id")"
+
+  [[ -d "$deployed" ]] || fail "deployed directory not found: $deployed"
+  [[ -d "$published" ]] || fail "published repository not found: $published"
+
+  local tmp_dep tmp_pub
+  tmp_dep="$(mktemp)"
+  tmp_pub="$(mktemp)"
+  trap 'rm -f "$tmp_dep" "$tmp_pub"' RETURN
+
+  generate_payload_manifest "$deployed" "$tmp_dep"
+  generate_payload_manifest "$published" "$tmp_pub"
+
+  local dep_digest pub_digest
+  dep_digest="$(compute_payload_digest "$tmp_dep")"
+  pub_digest="$(compute_payload_digest "$tmp_pub")"
+
+  echo "verify: deployed payload digest:  $dep_digest"
+  echo "verify: published payload digest: $pub_digest"
+
+  if [[ "$dep_digest" == "$pub_digest" ]]; then
+    echo "verify: SUCCESS: payload digests match for $id ($dep_digest)"
+    return 0
+  else
+    echo "verify: FAILED: behavior-bearing differences detected for $id:" >&2
+    diff -u --color=auto \
+      --label "deployed ($deployed)" "$tmp_dep" \
+      --label "published ($published)" "$tmp_pub" >&2 || true
+    fail "payload verification failed for $id; behavior-bearing differences must be tested in Run mode before publishing/releasing"
+  fi
+}
+
+cmd_run() {
+  local id="${1:-}"
+  [[ -n "$id" ]] || fail "run requires a plugin id (e.g. fred.clock)"
+  validate_plugin_id "$id"
+  [[ -n "$REPO_DIR" && -d "$REPO_DIR" ]] || fail "run requires a local workstation config checkout"
+
+  local deployed="$PLUGINS_SRC/$id"
+  local live="$LIVE_DIR/$id"
+  local dev_state test_state
+  dev_state="$(dev_state_dir "$id")"
+  test_state="$(test_state_dir "$id")"
+
+  [[ -d "$deployed" ]] || fail "deployed plugin not found: $deployed"
+  [[ -f "$deployed/manifest.json" ]] || fail "manifest.json missing in $deployed"
+
+  # 1. Overrides must be off
+  if [[ -L "$live" ]]; then
+    fail "$live is an active symlink; turn off dev/test mode before transitioning to Run ('tam-plugin restore $id')"
+  fi
+  if [[ -f "$dev_state/active" || -f "$test_state/active" ]]; then
+    fail "override state is active for $id; turn off dev/test mode before transitioning to Run ('tam-plugin restore $id')"
+  fi
+
+  # 2. Deployed plugin must be committed
+  if git -C "$REPO_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    local dirty
+    dirty="$(git -C "$REPO_DIR" status --porcelain --untracked-files=all -- "config/omarchy/plugins/$id" 2>/dev/null || true)"
+    if [[ -n "$dirty" ]]; then
+      printf 'run: uncommitted changes under config/omarchy/plugins/%s:\n%s\n' "$id" "$dirty" >&2
+      fail "commit changes first; Home Manager builds from the git tree"
+    fi
+  fi
+
+  # 3. Check accepted test snapshot if available
+  local test_current_link="$test_state/current"
+  if [[ -L "$test_current_link" && -d "$(readlink -f "$test_current_link" 2>/dev/null || true)" ]]; then
+    local accepted_snapshot
+    accepted_snapshot="$(readlink -f "$test_current_link")"
+    if [[ -f "$accepted_snapshot/.payload.digest" ]]; then
+      local accepted_digest="$(cat "$accepted_snapshot/.payload.digest")"
+      local tmp_dep="$(mktemp)"
+      generate_payload_manifest "$deployed" "$tmp_dep"
+      local dep_digest="$(compute_payload_digest "$tmp_dep")"
+      rm -f "$tmp_dep"
+      if [[ "$accepted_digest" != "$dep_digest" ]]; then
+        fail "deployed payload digest ($dep_digest) does not match accepted test snapshot ($accepted_digest); test your changes first"
+      fi
+      echo "run: verified deployed payload matches accepted test snapshot ($accepted_digest)"
+    fi
+  fi
+
+  # 4. Switch Home Manager
+  if command -v home-manager >/dev/null 2>&1 && [[ -f "$REPO_DIR/flake.nix" ]]; then
+    echo "run: switching Home Manager configuration..."
+    home-manager switch --flake "${REPO_DIR}#fred" || fail "Home Manager switch failed"
+  fi
+
+  # 5. Capture post-activation state
+  local gen="0"
+  local gen_file="${HOME}/.config/tamlinux/generation"
+  if [[ -f "$gen_file" ]]; then
+    gen="$(cat "$gen_file" 2>/dev/null || echo "0")"
+  fi
+
+  local store_path="unknown"
+  if [[ -e "$live" ]]; then
+    store_path="$(readlink -f "$live" 2>/dev/null || echo "$live")"
+  fi
+
+  local git_commit="unknown"
+  if git -C "$REPO_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    git_commit="$(git -C "$REPO_DIR" rev-parse HEAD 2>/dev/null || echo "unknown")"
+  fi
+
+  local version
+  version="$(jq -r '.version // "0.0.0"' "$deployed/manifest.json" 2>/dev/null || echo "0.0.0")"
+
+  local runs_dir="$REPO_DIR/system/plugin-runs"
+  mkdir -p "$runs_dir"
+  local manifest_tmp="$(mktemp)"
+  generate_payload_manifest "$deployed" "$manifest_tmp"
+  local final_digest="$(compute_payload_digest "$manifest_tmp")"
+  rm -f "$manifest_tmp"
+
+  local run_record="$runs_dir/${id}.json"
+  cat > "$run_record" <<EOF
+{
+  "id": "$id",
+  "version": "$version",
+  "gitCommit": "$git_commit",
+  "payloadDigest": "$final_digest",
+  "generation": $gen,
+  "storePath": "$store_path",
+  "timestamp": "$(date --iso-8601=seconds)"
+}
+EOF
+  echo "run: recorded daily-driver Run in $run_record"
+
+  # 6. Update system/bom.json
+  local bom_file="$REPO_DIR/system/bom.json"
+  if [[ -f "$bom_file" ]] && command -v jq >/dev/null 2>&1; then
+    local tmp_bom="${bom_file}.tmp.$$"
+    jq --arg id "$id" --arg ver "$version" \
+      '.components.plugins[$id] = $ver' "$bom_file" > "$tmp_bom" && mv "$tmp_bom" "$bom_file"
+    echo "run: updated $id to $version in $bom_file"
+  fi
+
+  reload_shell
+  echo "run: successfully transitioned $id v$version to Run mode"
+}
+
+
+cmd_restore() {
+  local id="${1:-}"
+  [[ -n "$id" ]] || fail "restore requires a plugin id (e.g. fred.clock)"
+  validate_plugin_id "$id"
+
+  local live="$LIVE_DIR/$id"
+  local dev_state test_state
+  dev_state="$(dev_state_dir "$id")"
+  test_state="$(test_state_dir "$id")"
+
+  echo "restore: inspecting override and recovery state for $id..."
+
+  # 1. Remove active symlink if present
+  if [[ -L "$live" ]]; then
+    local target
+    target="$(readlink "$live" 2>/dev/null || true)"
+    echo "restore: removing active symlink $live -> $target"
+    rm -f -- "$live"
+  fi
+
+  # 2. Reconcile dev state
+  if [[ -e "$dev_state/original" ]]; then
+    if [[ ! -e "$live" ]]; then
+      echo "restore: restoring original directory from dev state ($dev_state/original -> $live)"
+      mv -- "$dev_state/original" "$live"
+    else
+      echo "restore: note: $live already exists; removing saved dev copy" >&2
+      rm -rf -- "$dev_state/original"
+    fi
+  elif [[ -e "$dev_state/original.absent" ]]; then
+    if [[ -L "$live" ]]; then
+      rm -f -- "$live"
+    fi
+  fi
+  rm -f -- "$dev_state/original.absent" "$dev_state/active"
+  rmdir "$dev_state" 2>/dev/null || true
+
+  # 3. Reconcile test state
+  if [[ -e "$test_state/original" ]]; then
+    if [[ ! -e "$live" ]]; then
+      echo "restore: restoring original directory from test state ($test_state/original -> $live)"
+      mv -- "$test_state/original" "$live"
+    else
+      echo "restore: note: $live already exists; removing saved test copy" >&2
+      rm -rf -- "$test_state/original"
+    fi
+  elif [[ -e "$test_state/original.absent" ]]; then
+    if [[ -L "$live" ]]; then
+      rm -f -- "$live"
+    fi
+  fi
+  rm -f -- "$test_state/original.absent" "$test_state/active" "$test_state/current" "$test_state/previous"
+  rmdir "$test_state" 2>/dev/null || true
+
+  reload_shell
+  echo "restore: override state cleared for $id"
+}
+
 cmd_dev() {
   local id="${1:-}"
   local mode="${2:-}"
@@ -775,7 +1206,8 @@ cmd_dev() {
 
   local deployed="$PLUGINS_SRC/$id"
   local live="$LIVE_DIR/$id"
-  local test_state
+  local dev_state test_state
+  dev_state="$(dev_state_dir "$id")"
   test_state="$(test_state_dir "$id")"
   [[ ! -f "$test_state/active" ]] ||
     fail "$id is in snapshot test mode; run 'tam-plugin test $id off' first"
@@ -789,7 +1221,22 @@ cmd_dev() {
       return 0
     fi
 
-    rm -rf "$live"
+    if [[ -L "$live" ]]; then
+      fail "$live is an unknown symlink ($(readlink "$live")); run 'tam-plugin restore $id' before entering dev mode"
+    fi
+
+    if [[ -e "$dev_state/original" || -e "$dev_state/original.absent" || -f "$dev_state/active" ]]; then
+      fail "stale dev recovery state exists at $dev_state; run 'tam-plugin restore $id' first"
+    fi
+
+    mkdir -p -- "$dev_state"
+    if [[ -e "$live" ]]; then
+      mv -- "$live" "$dev_state/original"
+    else
+      : > "$dev_state/original.absent"
+    fi
+    : > "$dev_state/active"
+
     ln -s "$deployed" "$live"
     reload_shell
     echo "dev: mode ON for $id -> $deployed"
@@ -821,15 +1268,33 @@ cmd_dev() {
     fi
 
     if [[ -L "$live" ]]; then
-      rm "$live"
+      local target
+      target="$(readlink -f -- "$live" 2>/dev/null || true)"
+      if [[ -n "$target" && "$target" != "$(readlink -f -- "$deployed")" ]]; then
+        fail "refusing to remove dev symlink: $live does not point to $deployed (run 'tam-plugin restore $id' if needed)"
+      fi
+      rm -- "$live"
       echo "dev: removed dev symlink for $id"
     else
       echo "dev: $live is not a dev symlink"
     fi
 
+    # Restore the saved managed tree
+    if [[ -e "$dev_state/original" ]]; then
+      mv -- "$dev_state/original" "$live"
+      echo "dev: restored original plugin directory for $id"
+    elif [[ -e "$dev_state/original.absent" ]]; then
+      rm -f -- "$dev_state/original.absent"
+    fi
+    rm -f -- "$dev_state/active"
+    rmdir "$dev_state" 2>/dev/null || true
+
     if command -v home-manager >/dev/null 2>&1 && [[ -f "$REPO_DIR/flake.nix" ]]; then
       echo "dev: restoring Home Manager configuration..."
-      home-manager switch --flake "${REPO_DIR}#fred"
+      if ! home-manager switch --flake "${REPO_DIR}#fred"; then
+        warn "Home Manager switch failed. Your original plugin directory is restored at $live. Run 'tam-plugin restore $id' if needed."
+        fail "home-manager switch failed"
+      fi
     else
       echo "dev: note: run home-manager switch or recreate store symlinks if needed."
     fi
@@ -868,6 +1333,10 @@ case "${1:-}" in
     shift
     cmd_diff "$@"
     ;;
+  verify)
+    shift
+    cmd_verify "$@"
+    ;;
   dev)
     shift
     cmd_dev "$@"
@@ -875,6 +1344,14 @@ case "${1:-}" in
   test)
     shift
     cmd_test "$@"
+    ;;
+  run)
+    shift
+    cmd_run "$@"
+    ;;
+  restore)
+    shift
+    cmd_restore "$@"
     ;;
   upstream-diff)
     shift
