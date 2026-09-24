@@ -11,7 +11,7 @@ Discover, install, verify, and manage Fred's [Tamlinux](https://github.com/green
 | :-- | :-- |
 | **Showcase Website** | **[greenermoose.github.io/plugin-fred-tamlinux](https://greenermoose.github.io/plugin-fred-tamlinux/)** |
 | **Tool** | `tam-plugin` |
-| **Version** | `1.1.1` |
+| **Version** | `1.2.0` |
 | **License** | GPL-3.0-or-later |
 | **Authors** | Fred (@greenermoose), Gemini 3.8 Flash, Codex (gpt-5.6-sol), Claude Opus 5 |
 | **Platform** | Tamlinux (Hyprland, Quickshell) |
@@ -182,6 +182,15 @@ tam-plugin dev fred.clock off
 
 # Diff local deployed config against public published repo
 tam-plugin diff fred.clock
+
+# Machine-checked verification comparing payload manifests (fails on drift)
+tam-plugin verify fred.clock
+
+# Reconcile overrides or recover if an operation was interrupted
+tam-plugin restore fred.clock
+
+# Transition a tested candidate to normal daily-driver Run mode (updates BOM)
+tam-plugin run fred.clock
 ```
 
 ---
